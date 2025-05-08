@@ -4,10 +4,407 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Strength Log Pro</title>
-    <link rel="stylesheet" href="style.css">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="theme-color" content="#388e3c">
+    <style>
+        /* Minimal CSS Reset */
+        *, *::before, *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        html, body {
+            height: 100%;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+            line-height: 1.6;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        /* CSS Variables - Theme */
+        :root {
+            --text-color: #333;
+            --background-color: #f8f9fa;
+            --primary-color: #4caf50;
+            --primary-color-dark: #388e3c;
+            --secondary-color: #ffffff;
+            --border-color: #dee2e6;
+            --tab-bar-height: 60px;
+            --button-text-color: #fff;
+            --header-text-color: #2c3e50;
+            --shadow-color-light: rgba(0, 0, 0, 0.05);
+            --shadow-color-medium: rgba(0, 0, 0, 0.1);
+            --input-background: #fdfdfd;
+            --input-placeholder-color: #adb5bd;
+            --text-muted: #6c757d;
+            --sets-reps-color: #5a6268;
+        }
+
+        body {
+            background-color: var(--background-color);
+            color: var(--text-color);
+            display: flex;
+            justify-content: center;
+            font-size: 16px;
+        }
+
+        .app-container {
+            width: 100%;
+            max-width: 500px;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            background-color: var(--background-color);
+            box-shadow: 0 0 25px var(--shadow-color-medium);
+            overflow: hidden;
+        }
+
+        .content-area {
+            flex-grow: 1;
+            overflow-y: auto;
+            padding: 20px;
+            padding-bottom: calc(var(--tab-bar-height) + 20px); /* Increased padding at bottom */
+        }
+
+        .tab-content {
+            display: none;
+            flex-direction: column;
+            gap: 20px; /* Consistent gap */
+            animation: fadeIn 0.3s ease-in-out;
+        }
+
+        .tab-content.active-tab {
+            display: flex;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(8px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .page-header {
+            text-align: center;
+            margin-bottom: 15px; /* More space after header before form */
+        }
+
+        .page-header h1 {
+            font-size: 1.7em;
+            color: var(--header-text-color);
+            font-weight: 600;
+            margin-bottom: 4px;
+        }
+
+        .page-header p {
+            font-size: 0.9em;
+            color: var(--text-muted);
+        }
+
+        /* Forms */
+        .lift-form {
+            display: flex;
+            flex-direction: column;
+            gap: 15px; /* Gap between exercise groups and the final button */
+            background-color: var(--secondary-color);
+            padding: 20px;
+            border-radius: 12px; /* Softer radius */
+            box-shadow: 0 4px 15px var(--shadow-color-light); /* Softer shadow */
+        }
+        /* Add placeholder styling */
+        .lift-form p {
+            color: var(--text-muted);
+            font-style: italic;
+            text-align: center;
+            padding: 20px 0;
+        }
+
+
+        .exercise-group {
+            padding-bottom: 12px; /* Increased padding */
+            border-bottom: 1px solid #f0f0f0; /* Light separator line */
+        }
+        .exercise-group:last-of-type { 
+             border-bottom: none; 
+             padding-bottom: 0;
+        }
+
+
+        .exercise-group label {
+            font-weight: 500;
+            font-size: 0.95em;
+            color: #495057;
+            display: block;
+            margin-bottom: 3px; /* Reduced margin */
+        }
+        .exercise-group .sets-reps-info {
+            font-size: 0.8em;
+            color: var(--sets-reps-color);
+            margin-bottom: 6px;
+            font-style: italic;
+        }
+        .exercise-group .label-weight {
+            /* Specific style if needed */
+        }
+        .exercise-group .label-amrap {
+            font-size: 0.85em; 
+            color: var(--text-muted);
+            margin-top: 8px; 
+        }
+
+
+        .exercise-group input[type="number"] {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid var(--border-color);
+            border-radius: 8px; 
+            font-size: 1em;
+            appearance: textfield;
+            -moz-appearance: textfield;
+            background-color: var(--input-background);
+            color: var(--text-color);
+            margin-bottom: 5px; 
+        }
+        .exercise-group input[type="number"]::placeholder {
+            color: var(--input-placeholder-color);
+        }
+        .exercise-group input[type="number"]:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(76, 175, 80, 0.25); 
+        }
+        .exercise-group input[name*="amrap_reps"] { /* Style for AMRAP input if needed */
+            font-size: 0.9em;
+            padding: 10px;
+        }
+
+
+        /* Buttons */
+        .btn-primary, .btn-secondary {
+            color: var(--button-text-color);
+            border: none;
+            padding: 14px 18px; 
+            border-radius: 8px;
+            font-size: 1.0em; 
+            font-weight: 500;
+            cursor: pointer;
+            width: 100%;
+            transition: transform 0.1s ease, box-shadow 0.2s ease, background-color 0.2s ease;
+            display: inline-flex; 
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            gap: 8px; 
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary-color), var(--primary-color-dark));
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            margin-top: 10px; 
+        }
+
+        .btn-secondary {
+            background-color: #6c757d;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            margin-bottom: 15px;
+            width: auto; 
+            padding: 10px 15px; 
+        }
+        .btn-secondary:hover {
+            background-color: #5a6268;
+        }
+
+        .btn-primary:hover {
+            background: linear-gradient(135deg, var(--primary-color-dark), var(--primary-color)); 
+        }
+
+        .btn-primary:active, .btn-secondary:active {
+            transform: translateY(1px);
+            box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+        }
+        .btn-primary:disabled { 
+            background: #ced4da;
+            color: #6c757d;
+            cursor: not-allowed;
+            box-shadow: none;
+        }
+
+        .btn-icon { 
+            width: 1em; 
+            height: 1em; 
+        }
+
+
+        /* Tab Bar */
+        .tab-bar {
+            display: flex;
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            width: 100%;
+            max-width: 500px;
+            margin: 0 auto;
+            height: var(--tab-bar-height);
+            background-color: var(--secondary-color);
+            border-top: 1px solid var(--border-color);
+            box-shadow: 0 -2px 8px var(--shadow-color-light);
+            z-index: 100;
+        }
+
+        .tab-button {
+            flex: 1;
+            background-color: transparent;
+            border: none;
+            border-top: 3px solid transparent;
+            padding: 5px 0;
+            font-size: 0.7rem;
+            font-weight: 500;
+            color: var(--text-muted);
+            cursor: pointer;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            transition: color 0.2s ease, border-color 0.2s ease;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        .tab-button span { line-height: 1.2; }
+        .tab-button:hover { color: var(--primary-color); }
+        .tab-button.active-tab-button {
+            color: var(--primary-color);
+            border-top-color: var(--primary-color);
+            font-weight: 600;
+        }
+
+        /* Logs Tab */
+        .logs-list {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+        .log-card {
+            background-color: var(--secondary-color);
+            border: 1px solid var(--border-color);
+            border-radius: 10px; 
+            padding: 15px;
+            box-shadow: 0 3px 8px var(--shadow-color-light); 
+        }
+        .log-card-header {
+            font-size: 0.8em;
+            color: var(--text-muted);
+            margin-bottom: 10px;
+            border-bottom: 1px dashed #eee; 
+            padding-bottom: 8px; 
+        }
+        .log-card-day {
+            font-weight: 600;
+            color: var(--primary-color-dark);
+        }
+        .log-card-lifts {
+            font-size: 0.9em;
+        }
+        .log-card-lifts .lift-entry {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2px;
+            padding: 3px 0;
+        }
+        .log-card-lifts .lift-entry .exercise-name {
+            color: #343a40;
+            font-weight: 500;
+            margin-right: 5px; 
+        }
+        .log-card-lifts .lift-entry .lift-details {
+            text-align: right;
+        }
+        .log-card-lifts .lift-entry .weight-value { 
+            color: var(--primary-color);
+            font-weight: 600;
+            background-color: #e8f5e9; 
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-size: 0.95em;
+            margin-left: 5px;
+        }
+         .log-card-lifts .lift-entry .amrap-value {
+            font-size: 0.9em;
+            color: var(--text-muted);
+            margin-left: 8px;
+            font-style: italic;
+        }
+
+
+        /* Info Tab */
+        .static-content {
+            background-color: var(--secondary-color);
+            padding: 20px;
+            border-radius: 12px; 
+            box-shadow: 0 4px 15px var(--shadow-color-light); 
+            font-size: 0.9rem;
+            color: #495057;
+        }
+        .static-content h2, .static-content h3 {
+            color: var(--primary-color-dark);
+            margin-top: 22px; 
+            margin-bottom: 14px;
+            font-weight: 600;
+            border-bottom: 1px solid #e9ecef; 
+            padding-bottom: 8px; 
+        }
+        .static-content h2:first-child { margin-top: 0; }
+        .static-content p, .static-content ul, .static-content ol {
+            margin-bottom: 14px; 
+            line-height: 1.7; 
+        }
+        .static-content ul, .static-content ol { padding-left: 25px; }
+        .static-content li { margin-bottom: 8px; }
+        .static-content small { color: var(--text-muted); font-size: 0.9em; display: block; margin-top: 3px;}
+        .static-content em { color: #555; font-style: italic;}
+        .static-content strong { color: #333; font-weight: 600;}
+        .static-content table {
+            width: 100%;
+            margin-bottom: 18px; 
+            border-collapse: collapse;
+            font-size: 0.95em;
+        }
+        .static-content th, .static-content td {
+            text-align: left;
+            padding: 10px; 
+            border: 1px solid var(--border-color);
+        }
+        .static-content th {
+            background-color: #e9ecef; 
+            font-weight: 600;
+        }
+
+        /* Toast Notification */
+        .toast {
+            position: fixed;
+            bottom: calc(var(--tab-bar-height) + 20px);
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: rgba(40, 40, 40, 0.92);
+            color: #fff;
+            padding: 10px 18px;
+            border-radius: 20px;
+            z-index: 1000;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s ease, visibility 0.3s ease, bottom 0.3s ease;
+            font-size: 0.85em;
+            box-shadow: 0 3px 8px rgba(0,0,0,0.15);
+            pointer-events: none;
+        }
+        .toast.show {
+            opacity: 1;
+            visibility: visible;
+            bottom: calc(var(--tab-bar-height) + 25px);
+        }
+    </style>
 </head>
 <body>
     <div class="app-container">
@@ -18,7 +415,8 @@
                     <p>Log weights for "Squat Day"</p>
                 </header>
                 <form id="day1-form" class="lift-form">
-                    </form>
+                    <p>Loading exercises...</p> 
+                </form>
             </div>
 
             <div id="day2-content" class="tab-content">
@@ -26,8 +424,9 @@
                     <h1>Day 2 Lifts</h1>
                     <p>Log weights for "Bench Press Day"</p>
                 </header>
-                <form id="day2-form" class="lift-form">
-                    </form>
+                 <form id="day2-form" class="lift-form">
+                     <p>Loading exercises...</p> 
+                </form>
             </div>
 
             <div id="day3-content" class="tab-content">
@@ -35,8 +434,9 @@
                     <h1>Day 3 Lifts</h1>
                     <p>Log weights for "Deadlift Day"</p>
                 </header>
-                <form id="day3-form" class="lift-form">
-                    </form>
+                 <form id="day3-form" class="lift-form">
+                     <p>Loading exercises...</p> 
+                </form>
             </div>
 
             <div id="logs-content" class="tab-content">
@@ -57,156 +457,19 @@
                 </header>
                 <div class="static-content">
                     <h2>1. Key words you’ll see</h2>
-                    <table>
-                        <thead>
-                            <tr>
-                                <th>Word</th>
-                                <th>What it really means</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td>Rep (repetition)</td>
-                                <td>One up-and-down of the weight.</td>
-                            </tr>
-                            <tr>
-                                <td>Set</td>
-                                <td>A bunch of reps done together before you rest.</td>
-                            </tr>
-                            <tr>
-                                <td>RPE 7–8</td>
-                                <td>“I could have done 2–3 more reps if I had to.” A built-in safety check so you don’t go to failure every time.</td>
-                            </tr>
-                            <tr>
-                                <td>1 RM</td>
-                                <td>The heaviest weight you could lift once, with good form. (You don’t have to test it right now.)</td>
-                            </tr>
-                        </tbody>
-                    </table>
-
+                    <table><thead><tr><th>Word</th><th>What it really means</th></tr></thead><tbody><tr><td>Rep (repetition)</td><td>One up-and-down of the weight.</td></tr><tr><td>Set</td><td>A bunch of reps done together before you rest.</td></tr><tr><td>RPE 7–8</td><td>“I could have done 2–3 more reps if I had to.” A built-in safety check so you don’t go to failure every time.</td></tr><tr><td>1 RM</td><td>The heaviest weight you could lift once, with good form. (You don’t have to test it right now.)</td></tr></tbody></table>
                     <h2>2. Weekly schedule <small>(pick the days that suit you)</small></h2>
-                    <table>
-                        <thead>
-                            <tr>
-                                <th>Day</th>
-                                <th>What you’ll work on</th>
-                                <th>Example calendar</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td>Day 1</td>
-                                <td>Squat + pushing muscles (chest, shoulders)</td>
-                                <td>Monday</td>
-                            </tr>
-                            <tr>
-                                <td>Day 2</td>
-                                <td>Bench press + pulling muscles (back)</td>
-                                <td>Wednesday</td>
-                            </tr>
-                            <tr>
-                                <td>Day 3</td>
-                                <td>Deadlift + extra legs / arms</td>
-                                <td>Friday</td>
-                            </tr>
-                        </tbody>
-                    </table>
+                    <table><thead><tr><th>Day</th><th>What you’ll work on</th><th>Example calendar</th></tr></thead><tbody><tr><td>Day 1</td><td>Squat + pushing muscles (chest, shoulders)</td><td>Monday</td></tr><tr><td>Day 2</td><td>Bench press + pulling muscles (back)</td><td>Wednesday</td></tr><tr><td>Day 3</td><td>Deadlift + extra legs / arms</td><td>Friday</td></tr></tbody></table>
                     <p><em>Leave one day off between Day 1 and Day 3 so your legs recover.</em></p>
-
-                    <h2>3. What to do each day</h2>
-                    <h3>Day 1 – “Squat day”</h3>
-                    <ol>
-                        <li><strong>Back-squat</strong> – 5 sets × 3 reps
-                            <br><small>Pick a weight you can do 3 solid reps while still feeling you could do 2 more (RPE 7–8).</small></li>
-                        <li><strong>Paused bench press</strong> – 4 × 5
-                            <br><small>Lower the bar, pause for 1 sec on the chest, press up.</small></li>
-                        <li><strong>Romanian deadlift</strong> – 3 × 6
-                            <br><small>Hip-hinge that works hamstrings and lower back.</small></li>
-                        <li><strong>Dumb-bell split-squat</strong> – 3 × 8 per leg</li>
-                        <li><strong>Incline dumb-bell press</strong> – 3 × 10</li>
-                        <li><small>10 min quick conditioning – sled pushes, bike sprints, or brisk walking on an incline.</small></li>
-                    </ol>
-
-                    <h3>Day 2 – “Bench-press day”</h3>
-                    <ol>
-                        <li><strong>Bench press</strong> (normal pause) – 5 × 3</li>
-                        <li><strong>Barbell or Pendlay row</strong> – 4 × 6</li>
-                        <li><strong>Overhead press</strong> – 3 × 5</li>
-                        <li><strong>Weighted pull-ups</strong> – 4 × 5
-                            <br><small>(If you can’t do pull-ups yet, use a resistance band or do lat pull-downs.)</small></li>
-                        <li><strong>Rear-delt fly</strong> – 3 × 12</li>
-                        <li><small>Core superset – ab-wheel roll-outs & hanging knee-raises, 3 × 10 each</small></li>
-                    </ol>
-
-                    <h3>Day 3 – “Deadlift day”</h3>
-                    <ol>
-                        <li><strong>Deadlift</strong> – 5 sets × 2 reps</li>
-                        <li><strong>Front squat</strong> – 4 × 4</li>
-                        <li><strong>Close-grip bench or dips</strong> – 3 × 6–8</li>
-                        <li><strong>Leg press</strong> (or hack squat) – 3 × 10</li>
-                        <li><strong>Arm superset</strong> – EZ-bar curls & triceps push-downs, 3 × 12 each</li>
-                        <li><small>10 min finisher – farmer carries or kettlebell swings (great for grip and overall fitness)</small></li>
-                    </ol>
-
-                    <h2>4. How to warm up</h2>
-                    <ol>
-                        <li>5–7 min easy cardio (rower, bike, brisk walk).</li>
-                        <li>Joint prep: arm circles, leg swings, body-weight squats.</li>
-                        <li>Ramp-up sets: Start each main lift with the empty bar, then add weight in small jumps of 20 – 30 % until you reach your working weight.
-                            <br><small>(Example for a 100 kg squat goal: bar × 10 → 40 kg × 5 → 60 kg × 3 → 80 kg × 1 → work sets at 100 kg.)</small></li>
-                    </ol>
-
-                    <h2>5. How and when to add weight</h2>
-                    <h3>First 8–12 weeks (simple “every-time” rule)</h3>
-                    <ul>
-                        <li>If you finished all the sets and the last set still felt like RPE 8 or easier, add weight next week.</li>
-                        <li>Lower-body lifts: +5 kg.</li>
-                        <li>Upper-body lifts: +2–2.5 kg (or the next small plate you own).</li>
-                    </ul>
-                    <p><small>You’ll probably increase the weight each session for 4–5 weeks, then every second session as it gets heavier.</small></p>
-
-                    <h3>After that (slightly more advanced “4-week wave”)</h3>
-                    <ol>
-                        <li>Week 1: Use ~75 % of your best lift (feels light).</li>
-                        <li>Week 2: 80 %.</li>
-                        <li>Week 3: 85 % (hard week).</li>
-                        <li>Week 4: 60–65 % (easy “deload” to recover).</li>
-                    </ol>
-                    <p><small>Then repeat, a little heavier than last time. If you don’t know your true 1 RM, no problem—just keep the “add weight when it feels doable” rule for your first few months.</small></p>
-
-                    <h2>6. Eating, sleeping, and feeling good</h2>
-                    <table>
-                        <thead>
-                            <tr><th>Habit</th><th>Aim for</th></tr>
-                        </thead>
-                        <tbody>
-                            <tr><td>Sleep</td><td>7–9 h each night (muscles repair while you snooze).</td></tr>
-                            <tr><td>Protein</td><td>About 2 g per kg of body-weight daily (e.g., 150 g if you weigh 75 kg).</td></tr>
-                            <tr><td>Calories</td><td>A small daily surplus (≈ 200–300 kcal above maintenance) helps strength climb.</td></tr>
-                            <tr><td>Hydration</td><td>2–3 L water a day.</td></tr>
-                            <tr><td>Soreness check</td><td>A little muscle ache is fine; sharp joint pain is not. If something hurts in a bad way, stop and ask for help.</td></tr>
-                        </tbody>
-                    </table>
-
-                    <h2>7. Tracking progress <small>(super simple)</small></h2>
-                    <table>
-                        <thead>
-                            <tr><th>What to note</th><th>How</th></tr>
-                        </thead>
-                        <tbody>
-                            <tr><td>Weights and reps</td><td>Snap a photo of the workout log on your phone or jot it in a notebook.</td></tr>
-                            <tr><td>RPE of last set</td><td>Write a number 6–10 beside it (10 = absolute max).</td></tr>
-                            <tr><td>Body-weight (optional)</td><td>Weigh once a week, same time of day.</td></tr>
-                        </tbody>
-                    </table>
-                    <p><em>If the numbers in your log are creeping up over the months, the program is working. 🎉</em></p>
-
-                    <h2>Bottom line</h2>
-                    <ol>
-                        <li>Show up three times a week, hit the big lifts first, do the support work, go home.</li>
-                        <li>Add a little weight whenever the current load feels “pretty hard but not a grinder.”</li>
-                        <li>Eat, sleep, and repeat—strength is just patient practice stacked over many weeks.</li>
-                    </ol>
+                    <h2>3. What to do each day</h2><h3>Day 1 – “Squat day”</h3><ol><li><strong>Back-squat</strong> – 5 sets × 3 reps<br><small>Pick a weight you can do 3 solid reps while still feeling you could do 2 more (RPE 7–8).</small></li><li><strong>Paused bench press</strong> – 4 × 5<br><small>Lower the bar, pause for 1 sec on the chest, press up.</small></li><li><strong>Romanian deadlift</strong> – 3 × 6<br><small>Hip-hinge that works hamstrings and lower back.</small></li><li><strong>Dumb-bell split-squat</strong> – 3 × 8 per leg</li><li><strong>Incline dumb-bell press</strong> – 3 × 10</li><li><small>10 min quick conditioning – sled pushes, bike sprints, or brisk walking on an incline.</small></li></ol>
+                    <h3>Day 2 – “Bench-press day”</h3><ol><li><strong>Bench press</strong> (normal pause) – 5 × 3</li><li><strong>Barbell or Pendlay row</strong> – 4 × 6</li><li><strong>Overhead press</strong> – 3 × 5</li><li><strong>Weighted pull-ups</strong> – 4 × 5<br><small>(If you can’t do pull-ups yet, use a resistance band or do lat pull-downs.)</small></li><li><strong>Rear-delt fly</strong> – 3 × 12</li><li><small>Core superset – ab-wheel roll-outs & hanging knee-raises, 3 × 10 each</small></li></ol>
+                    <h3>Day 3 – “Deadlift day”</h3><ol><li><strong>Deadlift</strong> – 5 sets × 2 reps</li><li><strong>Front squat</strong> – 4 × 4</li><li><strong>Close-grip bench or dips</strong> – 3 × 6–8</li><li><strong>Leg press</strong> (or hack squat) – 3 × 10</li><li><strong>Arm superset</strong> – EZ-bar curls & triceps push-downs, 3 × 12 each</li><li><small>10 min finisher – farmer carries or kettlebell swings (great for grip and overall fitness)</small></li></ol>
+                    <h2>4. How to warm up</h2><ol><li>5–7 min easy cardio (rower, bike, brisk walk).</li><li>Joint prep: arm circles, leg swings, body-weight squats.</li><li>Ramp-up sets: Start each main lift with the empty bar, then add weight in small jumps of 20 – 30 % until you reach your working weight.<br><small>(Example for a 100 kg squat goal: bar × 10 → 40 kg × 5 → 60 kg × 3 → 80 kg × 1 → work sets at 100 kg.)</small></li></ol>
+                    <h2>5. How and when to add weight</h2><h3>First 8–12 weeks (simple “every-time” rule)</h3><ul><li>If you finished all the sets and the last set still felt like RPE 8 or easier, add weight next week.</li><li>Lower-body lifts: +5 kg.</li><li>Upper-body lifts: +2–2.5 kg (or the next small plate you own).</li></ul><p><small>You’ll probably increase the weight each session for 4–5 weeks, then every second session as it gets heavier.</small></p>
+                    <h3>After that (slightly more advanced “4-week wave”)</h3><ol><li>Week 1: Use ~75 % of your best lift (feels light).</li><li>Week 2: 80 %.</li><li>Week 3: 85 % (hard week).</li><li>Week 4: 60–65 % (easy “deload” to recover).</li></ol><p><small>Then repeat, a little heavier than last time. If you don’t know your true 1 RM, no problem—just keep the “add weight when it feels doable” rule for your first few months.</small></p>
+                    <h2>6. Eating, sleeping, and feeling good</h2><table><thead><tr><th>Habit</th><th>Aim for</th></tr></thead><tbody><tr><td>Sleep</td><td>7–9 h each night (muscles repair while you snooze).</td></tr><tr><td>Protein</td><td>About 2 g per kg of body-weight daily (e.g., 150 g if you weigh 75 kg).</td></tr><tr><td>Calories</td><td>A small daily surplus (≈ 200–300 kcal above maintenance) helps strength climb.</td></tr><tr><td>Hydration</td><td>2–3 L water a day.</td></tr><tr><td>Soreness check</td><td>A little muscle ache is fine; sharp joint pain is not. If something hurts in a bad way, stop and ask for help.</td></tr></tbody></table>
+                    <h2>7. Tracking progress <small>(super simple)</small></h2><table><thead><tr><th>What to note</th><th>How</th></tr></thead><tbody><tr><td>Weights and reps</td><td>Snap a photo of the workout log on your phone or jot it in a notebook.</td></tr><tr><td>RPE of last set</td><td>Write a number 6–10 beside it (10 = absolute max).</td></tr><tr><td>Body-weight (optional)</td><td>Weigh once a week, same time of day.</td></tr></tbody></table><p><em>If the numbers in your log are creeping up over the months, the program is working. 🎉</em></p>
+                    <h2>Bottom line</h2><ol><li>Show up three times a week, hit the big lifts first, do the support work, go home.</li><li>Add a little weight whenever the current load feels “pretty hard but not a grinder.”</li><li>Eat, sleep, and repeat—strength is just patient practice stacked over many weeks.</li></ol>
                 </div>
             </div>
         </div>
@@ -225,6 +488,416 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js"></script>
     
-    <script src="app.js"></script>
+    <script>
+        // Wait for the DOM to be fully loaded before running the script
+        document.addEventListener('DOMContentLoaded', () => {
+            // Add a log to confirm the script is running and DOM is ready
+            console.log("DOMContentLoaded event fired. Initializing app...");
+
+            const APP_STORAGE_KEY = 'strengthLogPro_v3_targetedAmrap'; // Updated key
+
+            // Define exercises with sets, reps, and main lift indicator
+            const EXERCISES_BY_DAY = {
+                1: [ // Squat Day
+                    { id: 'back_squat', label: 'Back-squat', sets: 5, reps: '3', isMainLift: true },
+                    { id: 'paused_bench_press', label: 'Paused bench press', sets: 4, reps: '5', isMainLift: false },
+                    { id: 'romanian_deadlift', label: 'Romanian deadlift', sets: 3, reps: '6', isMainLift: false },
+                    { id: 'db_split_squat', label: 'Dumb-bell split-squat', sets: 3, reps: '8 per leg', isMainLift: false },
+                    { id: 'incline_db_press', label: 'Incline dumb-bell press', sets: 3, reps: '10', isMainLift: false }
+                ],
+                2: [ // Bench Press Day
+                    { id: 'bench_press_normal', label: 'Bench press (normal pause)', sets: 5, reps: '3', isMainLift: true },
+                    { id: 'barbell_pendlay_row', label: 'Barbell or Pendlay row', sets: 4, reps: '6', isMainLift: false },
+                    { id: 'overhead_press', label: 'Overhead press', sets: 3, reps: '5', isMainLift: false },
+                    { id: 'weighted_pullups_lat_pulldowns', label: 'Weighted pull-ups / Lat pull-downs', sets: 4, reps: '5', isMainLift: false },
+                    { id: 'rear_delt_fly', label: 'Rear-delt fly', sets: 3, reps: '12', isMainLift: false }
+                ],
+                3: [ // Deadlift Day
+                    { id: 'deadlift', label: 'Deadlift', sets: 5, reps: '2', isMainLift: true },
+                    { id: 'front_squat', label: 'Front squat', sets: 4, reps: '4', isMainLift: false },
+                    { id: 'close_grip_bench_dips', label: 'Close-grip bench or Dips', sets: 3, reps: '6-8', isMainLift: false },
+                    { id: 'leg_press_hack_squat', label: 'Leg press or Hack squat', sets: 3, reps: '10', isMainLift: false },
+                    { id: 'ez_bar_curl', label: 'EZ-bar Curl', sets: 3, reps: '12', isMainLift: false }, 
+                    { id: 'triceps_pushdown', label: 'Triceps Push-down', sets: 3, reps: '12', isMainLift: false } 
+                ]
+            };
+
+            // --- Toast Notification Function (Define early) ---
+            const toastElement = document.getElementById('toast-message');
+            let toastTimeout;
+            function showToast(message) {
+                if (!toastElement) { 
+                    console.log("Toast:", message); // Fallback log
+                    return; 
+                }
+                clearTimeout(toastTimeout);
+                toastElement.textContent = message;
+                toastElement.classList.add('show');
+                toastTimeout = setTimeout(() => toastElement.classList.remove('show'), 3000);
+            }
+
+            // --- Initialize Forms ---
+            function populateExerciseForms() {
+                console.log("Populating exercise forms..."); // Debug log
+                for (const dayIdKey in EXERCISES_BY_DAY) {
+                    if (EXERCISES_BY_DAY.hasOwnProperty(dayIdKey)) {
+                        const dayId = parseInt(dayIdKey);
+                        const form = document.getElementById(`day${dayId}-form`);
+                        const exercisesForDay = EXERCISES_BY_DAY[dayIdKey];
+
+                        if (form && exercisesForDay) {
+                            form.innerHTML = ''; // Clear "Loading..." placeholder
+                            
+                            let formContentHTML = `<input type="hidden" name="dayId" value="${dayId}">`;
+                            exercisesForDay.forEach(exercise => {
+                                formContentHTML += `
+                                    <div class="exercise-group">
+                                        <label for="exercise_weight_${exercise.id}_day${dayId}" class="label-weight">${exercise.label}</label>
+                                        <div class="sets-reps-info">${exercise.sets} sets × ${exercise.reps} reps</div>
+                                        <input type="number" id="exercise_weight_${exercise.id}_day${dayId}" name="exercise_weight_${exercise.id}" step="0.5" inputmode="decimal" placeholder="Weight (kg)">
+                                `;
+                                // Conditionally add AMRAP field if it's a main lift
+                                if (exercise.isMainLift) {
+                                    formContentHTML += `
+                                        <label for="exercise_amrap_reps_${exercise.id}_day${dayId}" class="label-amrap">${exercise.label} - AMRAP Reps (optional)</label>
+                                        <input type="number" id="exercise_amrap_reps_${exercise.id}_day${dayId}" name="exercise_amrap_reps_${exercise.id}" step="1" inputmode="numeric" placeholder="Reps">
+                                    `;
+                                }
+                                formContentHTML += `</div>`; // Close exercise-group
+                            });
+                            formContentHTML += `<button type="submit" class="btn-primary">Log Day ${dayId} Lifts</button>`;
+                            form.innerHTML = formContentHTML; // Set the complete form content
+                            console.log(`Form for Day ${dayId} populated successfully.`); // Success log
+                        } else {
+                            console.error(`Could not find form or exercises for Day ${dayIdKey}. Form element:`, form);
+                        }
+                    }
+                }
+            }
+            
+            // --- Execute Initialization ---
+            try {
+                populateExerciseForms();
+            } catch (error) {
+                console.error("Error during populateExerciseForms execution:", error);
+                showToast("Error setting up forms. Check console.");
+            }
+
+            // --- Tab Navigation ---
+            const tabButtons = document.querySelectorAll('.tab-button');
+            const tabContents = document.querySelectorAll('.tab-content');
+            const defaultTabId = 'day1-content';
+
+            function switchTab(targetTabId) {
+                console.log(`Switching tab to: ${targetTabId}`); // Debug log
+                tabContents.forEach(content => content.classList.remove('active-tab'));
+                const activeContent = document.getElementById(targetTabId);
+                if (activeContent) {
+                    activeContent.classList.add('active-tab');
+                } else {
+                    console.warn(`Target tab content '${targetTabId}' not found.`);
+                }
+                tabButtons.forEach(button => {
+                    button.classList.remove('active-tab-button');
+                    if (button.dataset.tab === targetTabId) {
+                        button.classList.add('active-tab-button');
+                    }
+                });
+                if (targetTabId === 'logs-content') renderLogs();
+            }
+
+            tabButtons.forEach(button => {
+                 if(button.dataset.tab) {
+                    button.addEventListener('click', (e) => {
+                        const targetTab = e.currentTarget.dataset.tab; 
+                        if (targetTab) {
+                             switchTab(targetTab);
+                        } else {
+                            console.error("Clicked element missing data-tab attribute:", e.currentTarget);
+                        }
+                    });
+                 } else {
+                     console.warn("Found a tab button without a data-tab attribute:", button);
+                 }
+            });
+
+            // Initialize the default tab after setting up listeners
+            if (document.getElementById(defaultTabId)) {
+                switchTab(defaultTabId);
+            } else if (tabButtons.length > 0 && tabButtons[0].dataset.tab) {
+                console.warn(`Default tab ${defaultTabId} not found, switching to first available tab.`);
+                switchTab(tabButtons[0].dataset.tab);
+            } else {
+                console.error("No tabs found to initialize.");
+            }
+
+            // --- Form Handling ---
+            // Use event delegation on the body to catch form submissions
+            document.body.addEventListener('submit', function(event) {
+                if (event.target.matches('.lift-form')) {
+                    event.preventDefault(); 
+                    console.log(`Form submitted: ${event.target.id}`); 
+
+                    const form = event.target; 
+                    const formData = new FormData(form);
+                    const dayIdString = formData.get('dayId');
+                    if (!dayIdString) {
+                        showToast("Error: Day ID missing."); return;
+                    }
+                    const dayId = parseInt(dayIdString);
+                    const sessionLifts = [];
+                    let hasEnteredData = false;
+
+                    const exercisesForCurrentDay = EXERCISES_BY_DAY[dayId];
+                    if (!exercisesForCurrentDay) {
+                        showToast("Error: Exercise definition missing."); return;
+                    }
+
+                    exercisesForCurrentDay.forEach(exercise => {
+                        const weightValue = formData.get(`exercise_weight_${exercise.id}`);
+                        let amrapRepsValue = null;
+                        if (exercise.isMainLift) {
+                            amrapRepsValue = formData.get(`exercise_amrap_reps_${exercise.id}`);
+                        }
+                        
+                        let weight = null;
+                        let amrapReps = null;
+                        let exerciseHasData = false; 
+
+                        if (weightValue && weightValue.trim() !== '') {
+                            const parsedWeight = parseFloat(weightValue);
+                            if (!isNaN(parsedWeight) && parsedWeight >= 0) { 
+                                weight = parsedWeight;
+                                exerciseHasData = true;
+                            }
+                        }
+
+                        if (exercise.isMainLift && amrapRepsValue && amrapRepsValue.trim() !== '') {
+                            const parsedAmrapReps = parseInt(amrapRepsValue, 10);
+                            if (!isNaN(parsedAmrapReps) && parsedAmrapReps >= 0) { 
+                                amrapReps = parsedAmrapReps;
+                                exerciseHasData = true; 
+                            }
+                        }
+                        
+                        if (exerciseHasData) {
+                            sessionLifts.push({
+                                exerciseId: exercise.id,
+                                exerciseLabel: exercise.label,
+                                weight: weight, 
+                                amrapReps: exercise.isMainLift ? amrapReps : null 
+                            });
+                            hasEnteredData = true; 
+                        }
+                    });
+
+                    if (!hasEnteredData) {
+                        showToast('Please enter weight or AMRAP reps for at least one exercise.');
+                        return;
+                    }
+
+                    const logEntry = {
+                        id: Date.now(),
+                        timestamp: Date.now(),
+                        dayId: dayId,
+                        lifts: sessionLifts
+                    };
+
+                    saveLogEntry(logEntry);
+                    showToast(`Day ${dayId} lifts logged! 👍`);
+                    form.reset();
+                }
+            });
+
+
+            // --- LocalStorage Functions ---
+            function getLogEntries() {
+                const entriesJSON = localStorage.getItem(APP_STORAGE_KEY);
+                try {
+                    return entriesJSON ? JSON.parse(entriesJSON) : [];
+                } catch (e) {
+                    console.error("Error parsing log entries:", e);
+                    localStorage.removeItem(APP_STORAGE_KEY); 
+                    return [];
+                }
+            }
+            function saveLogEntry(entry) {
+                const entries = getLogEntries();
+                entries.push(entry);
+                entries.sort((a, b) => b.timestamp - a.timestamp); 
+                try {
+                    localStorage.setItem(APP_STORAGE_KEY, JSON.stringify(entries));
+                } catch (e) {
+                    console.error("Error saving to localStorage:", e);
+                    showToast("Error saving data. Storage might be full.");
+                }
+            }
+
+            // --- Render Logs ---
+            const logsListContainer = document.getElementById('logs-list');
+            function renderLogs() {
+                if (!logsListContainer) {
+                     console.error("Logs list container element not found!");
+                     return;
+                }
+                logsListContainer.innerHTML = ''; 
+                const entries = getLogEntries();
+
+                if (entries.length === 0) {
+                    logsListContainer.innerHTML = '<p style="text-align:center; color:var(--text-muted); padding:20px 0;">No sessions logged yet.</p>';
+                    return;
+                }
+
+                entries.forEach(entry => {
+                    const card = document.createElement('div');
+                    card.className = 'log-card';
+                    const date = new Date(entry.timestamp);
+                    const formattedDate = date.toLocaleDateString(undefined, {
+                        weekday: 'short', year: 'numeric', month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit'
+                    });
+
+                    let liftsHTML = '<div class="log-card-lifts">';
+                    if (entry.lifts && entry.lifts.length > 0) {
+                        entry.lifts.forEach(lift => {
+                            const dayExercises = EXERCISES_BY_DAY[entry.dayId] || [];
+                            const exerciseDef = dayExercises.find(ex => ex.id === lift.exerciseId);
+
+                            liftsHTML += `<div class="lift-entry">
+                                            <span class="exercise-name">${lift.exerciseLabel || 'N/A'}:</span>
+                                            <span class="lift-details">`;
+                            if (typeof lift.weight === 'number') {
+                                liftsHTML += `<span class="weight-value">${lift.weight} kg</span>`;
+                            }
+                            if (exerciseDef?.isMainLift && typeof lift.amrapReps === 'number') {
+                                liftsHTML += `<span class="amrap-value">${lift.amrapReps} AMRAP</span>`;
+                            }
+                            liftsHTML += `   </span>
+                                        </div>`;
+                        });
+                    } else {
+                        liftsHTML += '<div>No specific lifts recorded.</div>';
+                    }
+                    liftsHTML += '</div>';
+
+                    card.innerHTML = `
+                        <div class="log-card-header">
+                            <span class="log-card-day">Day ${entry.dayId || 'N/A'}</span> &ndash; ${formattedDate}
+                        </div>
+                        ${liftsHTML}
+                    `;
+                    logsListContainer.appendChild(card);
+                });
+            }
+
+
+            // --- Excel Export ---
+            const exportButton = document.getElementById('export-excel');
+            if (exportButton) {
+                exportButton.addEventListener('click', exportSessionsToExcel);
+            } else {
+                 console.error("Export button element not found!");
+            }
+
+            function getAllExerciseHeadersForExcel() {
+                const uniqueExercises = {}; 
+                Object.values(EXERCISES_BY_DAY).forEach(dayExercises => {
+                    if (Array.isArray(dayExercises)) {
+                        dayExercises.forEach(ex => {
+                            if (!uniqueExercises[ex.id]) { 
+                                uniqueExercises[ex.id] = { label: ex.label, isMainLift: !!ex.isMainLift };
+                            } else if (ex.isMainLift && !uniqueExercises[ex.id].isMainLift) {
+                                uniqueExercises[ex.id].isMainLift = true;
+                            }
+                        });
+                    }
+                });
+
+                const sortedExercises = Object.values(uniqueExercises).sort((a,b) => a.label.localeCompare(b.label));
+                
+                const finalHeaders = ['Timestamp', 'Day ID'];
+                sortedExercises.forEach(ex => {
+                    finalHeaders.push(`${ex.label} - Weight (kg)`);
+                    if (ex.isMainLift) { 
+                        finalHeaders.push(`${ex.label} - AMRAP Reps`);
+                    }
+                });
+                return finalHeaders;
+            }
+
+            function exportSessionsToExcel() {
+                // Check if libraries are loaded (SheetJS is XLSX, FileSaver is saveAs)
+                if (typeof XLSX === 'undefined' || typeof saveAs === 'undefined') {
+                    showToast("Error: Export libraries not loaded.");
+                    console.error("XLSX or FileSaver library not found. Check script tags in HTML.");
+                    return;
+                }
+
+                const sessions = getLogEntries();
+                if (sessions.length === 0) {
+                    showToast("No data to export."); return;
+                }
+
+                const allHeaders = getAllExerciseHeadersForExcel();
+            
+                const dataForSheet = sessions.map(session => {
+                    const row = {
+                        'Timestamp': new Date(session.timestamp).toLocaleString(), 
+                        'Day ID': session.dayId
+                    };
+                    allHeaders.slice(2).forEach(header => row[header] = ''); 
+
+                    if (session.lifts && Array.isArray(session.lifts)) {
+                        session.lifts.forEach(lift => {
+                            let exerciseDef = null;
+                            for (const dayKey in EXERCISES_BY_DAY) {
+                                const foundEx = EXERCISES_BY_DAY[dayKey].find(ex => ex.id === lift.exerciseId);
+                                if (foundEx) {
+                                    exerciseDef = foundEx;
+                                    break;
+                                }
+                            }
+                            
+                            const weightHeader = `${lift.exerciseLabel} - Weight (kg)`;
+                            if (allHeaders.includes(weightHeader) && typeof lift.weight === 'number') {
+                                 row[weightHeader] = lift.weight;
+                            }
+
+                            if (exerciseDef?.isMainLift) { 
+                                const amrapHeader = `${lift.exerciseLabel} - AMRAP Reps`;
+                                if (allHeaders.includes(amrapHeader) && typeof lift.amrapReps === 'number') {
+                                     row[amrapHeader] = lift.amrapReps;
+                                }
+                            }
+                        });
+                    }
+                    return row;
+                });
+
+                try {
+                    const worksheet = XLSX.utils.json_to_sheet(dataForSheet, { header: allHeaders, skipHeader: false }); 
+                    const workbook = XLSX.utils.book_new();
+                    XLSX.utils.book_append_sheet(workbook, worksheet, "Strength Logs");
+
+                    const today = new Date();
+                    const dateStr = `${today.getFullYear()}${String(today.getMonth() + 1).padStart(2, '0')}${String(today.getDate()).padStart(2, '0')}`;
+                    const fileName = `StrengthLogPro_Export_${dateStr}.xlsx`;
+
+                    // Use FileSaver.js saveAs function
+                    const wbout = XLSX.write(workbook, { bookType: 'xlsx', type: 'array' });
+                    saveAs(new Blob([wbout], { type: "application/octet-stream" }), fileName);
+
+                    showToast("Data exported to Excel!");
+                } catch (err) {
+                    showToast("Error exporting data. See console.");
+                    console.error("Excel export error:", err);
+                }
+            }
+            
+            // Initial render if logs tab is active (edge case)
+            if (document.querySelector('.tab-button.active-tab-button[data-tab="logs-content"]')) {
+                renderLogs();
+            }
+        }); // End of DOMContentLoaded listener
+    </script>
 </body>
 </html>
