@@ -1,446 +1,307 @@
-1. HTML (index.html)
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Workout Log App</title>
-    <link rel="stylesheet" href="style.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" integrity="sha512-9usAa10IRO0HhonpyAIVpjrylPvoDwiPUiKdWk5t3PyolY1cOd4DSE0Ga+ri4AuTroPR5aQvXU9xC6qOPnzFeg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-</head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>Strength Logger</title>
+    <link rel="stylesheet" href="styles.css">
+    </head>
 <body>
-    <header>
-        <h1>My Workout Plan</h1>
-        <nav>
-            <button data-tab="day1">
-                <span class="icon">🏋️‍♂️</span> <span class="text">Day 1 (Squat)</span>
-            </button>
-            <button data-tab="day2">
-                <span class="icon">💪</span> <span class="text">Day 2 (Bench)</span>
-            </button>
-            <button data-tab="day3">
-                <span class="icon">🦵</span> <span class="text">Day 3 (Deadlift)</span>
-            </button>
-            <button data-tab="logs">
-                <span class="icon">📊</span> <span class="text">Logs</span>
-            </button>
-            <button data-tab="info">
-                <span class="icon">ℹ️</span> <span class="text">Routine Info</span>
-            </button>
+    <div class="app-container">
+        <div class="content-area">
+            <div id="day1-content" class="tab-content active-tab">
+                <header>
+                    <h2>Day 1 – Squat Focus</h2>
+                </header>
+                <form id="day1-form" class="workout-form">
+                    <div class="form-group">
+                        <label for="day1-bodyweight">Body-weight (kg) [optional]</label>
+                        <input type="number" id="day1-bodyweight" name="bodyweight" step="0.1">
+                    </div>
+                    <div class="form-group">
+                        <label for="day1-main-lift-weight">Main Lift Weight (kg)*</label>
+                        <input type="number" id="day1-main-lift-weight" name="mainWeight" step="0.5" required>
+                    </div>
+                    <div class="form-group-grid">
+                        <label for="day1-set1">Set 1 Reps</label>
+                        <input type="number" id="day1-set1" name="set1" value="3" step="1">
+                        <label for="day1-set2">Set 2 Reps</label>
+                        <input type="number" id="day1-set2" name="set2" value="3" step="1">
+                        <label for="day1-set3">Set 3 Reps</label>
+                        <input type="number" id="day1-set3" name="set3" value="3" step="1">
+                        <label for="day1-set4">Set 4 Reps</label>
+                        <input type="number" id="day1-set4" name="set4" value="3" step="1">
+                        <label for="day1-set5">Set 5 Reps</label>
+                        <input type="number" id="day1-set5" name="set5" value="3" step="1">
+                    </div>
+                    <div class="form-group">
+                        <label class="checkbox-label">
+                            <input type="checkbox" id="day1-amrap-checkbox" name="amrapCheckbox" checked>
+                            AMRAP final set
+                        </label>
+                    </div>
+                    <div id="day1-amrap-fields" class="amrap-fields">
+                        <div class="form-group">
+                            <label for="day1-amrap-reps">AMRAP Reps</label>
+                            <input type="number" id="day1-amrap-reps" name="amrapReps" step="1">
+                        </div>
+                        <div class="form-group">
+                            <label for="day1-rpe">RPE (Rate of Perceived Exertion)</label>
+                            <div class="rpe-slider-container">
+                                <span>6</span>
+                                <input type="range" id="day1-rpe" name="rpe" min="6" max="10" value="8" step="0.5">
+                                <span>10</span>
+                            </div>
+                            <output for="day1-rpe" id="day1-rpe-output">8</output>
+                        </div>
+                    </div>
+                    <details class="accessory-block">
+                        <summary>Accessory Work (optional weights)</summary>
+                        <div class="form-group">
+                            <label for="day1-accessory1-weight">Romanian DL (kg)</label>
+                            <input type="number" id="day1-accessory1-weight" name="accessory_romanian_dl_weight" step="0.5">
+                            <label for="day1-accessory1-reps">Reps</label>
+                            <input type="number" id="day1-accessory1-reps" name="accessory_romanian_dl_reps" step="1">
+                        </div>
+                        <div class="form-group">
+                            <label for="day1-accessory2-weight">Split-Squat (kg)</label>
+                            <input type="number" id="day1-accessory2-weight" name="accessory_split_squat_weight" step="0.5">
+                            <label for="day1-accessory2-reps">Reps</label>
+                            <input type="number" id="day1-accessory2-reps" name="accessory_split_squat_reps" step="1">
+                        </div>
+                        <div class="form-group">
+                            <label for="day1-accessory3-weight">Incline DB Press (kg)</label>
+                            <input type="number" id="day1-accessory3-weight" name="accessory_incline_db_press_weight" step="0.5">
+                            <label for="day1-accessory3-reps">Reps</label>
+                            <input type="number" id="day1-accessory3-reps" name="accessory_incline_db_press_reps" step="1">
+                        </div>
+                    </details>
+                    <div class="form-group">
+                        <label for="day1-notes">Notes</label>
+                        <textarea id="day1-notes" name="notes" rows="3"></textarea>
+                    </div>
+                    <button type="submit" class="btn-primary" id="log-day1">Log Session</button>
+                </form>
+            </div>
+
+            <div id="day2-content" class="tab-content">
+                <header>
+                    <h2>Day 2 – Overhead Press Focus</h2>
+                </header>
+                <form id="day2-form" class="workout-form">
+                    <div class="form-group">
+                        <label for="day2-bodyweight">Body-weight (kg) [optional]</label>
+                        <input type="number" id="day2-bodyweight" name="bodyweight" step="0.1">
+                    </div>
+                    <div class="form-group">
+                        <label for="day2-main-lift-weight">Main Lift Weight (kg)*</label>
+                        <input type="number" id="day2-main-lift-weight" name="mainWeight" step="0.5" required>
+                    </div>
+                     <div class="form-group-grid">
+                        <label for="day2-set1">Set 1 Reps</label>
+                        <input type="number" id="day2-set1" name="set1" value="3" step="1">
+                        <label for="day2-set2">Set 2 Reps</label>
+                        <input type="number" id="day2-set2" name="set2" value="3" step="1">
+                        <label for="day2-set3">Set 3 Reps</label>
+                        <input type="number" id="day2-set3" name="set3" value="3" step="1">
+                        <label for="day2-set4">Set 4 Reps</label>
+                        <input type="number" id="day2-set4" name="set4" value="2" step="1">
+                        <label for="day2-set5">Set 5 Reps</label>
+                        <input type="number" id="day2-set5" name="set5" value="2" step="1">
+                    </div>
+                    <div class="form-group">
+                        <label class="checkbox-label">
+                            <input type="checkbox" id="day2-amrap-checkbox" name="amrapCheckbox" checked>
+                            AMRAP final set
+                        </label>
+                    </div>
+                    <div id="day2-amrap-fields" class="amrap-fields">
+                        <div class="form-group">
+                            <label for="day2-amrap-reps">AMRAP Reps</label>
+                            <input type="number" id="day2-amrap-reps" name="amrapReps" step="1">
+                        </div>
+                        <div class="form-group">
+                            <label for="day2-rpe">RPE (Rate of Perceived Exertion)</label>
+                             <div class="rpe-slider-container">
+                                <span>6</span>
+                                <input type="range" id="day2-rpe" name="rpe" min="6" max="10" value="8" step="0.5">
+                                <span>10</span>
+                            </div>
+                            <output for="day2-rpe" id="day2-rpe-output">8</output>
+                        </div>
+                    </div>
+                    <details class="accessory-block">
+                        <summary>Accessory Work (optional weights)</summary>
+                        <div class="form-group">
+                            <label for="day2-accessory1-weight">Overhead Press (kg)</label>
+                            <input type="number" id="day2-accessory1-weight" name="accessory_overhead_press_weight" step="0.5">
+                            <label for="day2-accessory1-reps">Reps</label>
+                            <input type="number" id="day2-accessory1-reps" name="accessory_overhead_press_reps" step="1">
+                        </div>
+                        <div class="form-group">
+                            <label for="day2-accessory2-weight">Pendlay Row (kg)</label>
+                            <input type="number" id="day2-accessory2-weight" name="accessory_pendlay_row_weight" step="0.5">
+                            <label for="day2-accessory2-reps">Reps</label>
+                            <input type="number" id="day2-accessory2-reps" name="accessory_pendlay_row_reps" step="1">
+                        </div>
+                        <div class="form-group">
+                            <label for="day2-accessory3-weight">Weighted Pull-ups (kg)</label>
+                            <input type="number" id="day2-accessory3-weight" name="accessory_weighted_pullups_weight" step="0.5">
+                             <label for="day2-accessory3-reps">Reps</label>
+                            <input type="number" id="day2-accessory3-reps" name="accessory_weighted_pullups_reps" step="1">
+                        </div>
+                         <div class="form-group">
+                            <label for="day2-accessory4-weight">Rear Delt Fly (kg)</label>
+                            <input type="number" id="day2-accessory4-weight" name="accessory_rear_delt_fly_weight" step="0.5">
+                            <label for="day2-accessory4-reps">Reps</label>
+                            <input type="number" id="day2-accessory4-reps" name="accessory_rear_delt_fly_reps" step="1">
+                        </div>
+                    </details>
+                    <div class="form-group">
+                        <label for="day2-notes">Notes</label>
+                        <textarea id="day2-notes" name="notes" rows="3"></textarea>
+                    </div>
+                    <button type="submit" class="btn-primary" id="log-day2">Log Session</button>
+                </form>
+            </div>
+
+            <div id="day3-content" class="tab-content">
+                <header>
+                    <h2>Day 3 – Deadlift Focus</h2> </header>
+                 <form id="day3-form" class="workout-form">
+                    <div class="form-group">
+                        <label for="day3-bodyweight">Body-weight (kg) [optional]</label>
+                        <input type="number" id="day3-bodyweight" name="bodyweight" step="0.1">
+                    </div>
+                    <div class="form-group">
+                        <label for="day3-main-lift-weight">Main Lift Weight (kg)*</label>
+                        <input type="number" id="day3-main-lift-weight" name="mainWeight" step="0.5" required>
+                    </div>
+                     <div class="form-group-grid">
+                        <label for="day3-set1">Set 1 Reps</label>
+                        <input type="number" id="day3-set1" name="set1" value="2" step="1">
+                        <label for="day3-set2">Set 2 Reps</label>
+                        <input type="number" id="day3-set2" name="set2" value="2" step="1">
+                        <label for="day3-set3">Set 3 Reps</label>
+                        <input type="number" id="day3-set3" name="set3" value="2" step="1">
+                        <label for="day3-set4">Set 4 Reps</label>
+                        <input type="number" id="day3-set4" name="set4" value="2" step="1">
+                        <label for="day3-set5">Set 5 Reps</label>
+                        <input type="number" id="day3-set5" name="set5" value="2" step="1">
+                    </div>
+                    <div class="form-group">
+                        <label class="checkbox-label">
+                            <input type="checkbox" id="day3-amrap-checkbox" name="amrapCheckbox" checked>
+                            AMRAP final set
+                        </label>
+                    </div>
+                    <div id="day3-amrap-fields" class="amrap-fields">
+                        <div class="form-group">
+                            <label for="day3-amrap-reps">AMRAP Reps</label>
+                            <input type="number" id="day3-amrap-reps" name="amrapReps" step="1">
+                        </div>
+                        <div class="form-group">
+                            <label for="day3-rpe">RPE (Rate of Perceived Exertion)</label>
+                             <div class="rpe-slider-container">
+                                <span>6</span>
+                                <input type="range" id="day3-rpe" name="rpe" min="6" max="10" value="8" step="0.5">
+                                <span>10</span>
+                            </div>
+                            <output for="day3-rpe" id="day3-rpe-output">8</output>
+                        </div>
+                    </div>
+                    <details class="accessory-block">
+                        <summary>Accessory Work (optional weights)</summary>
+                        <div class="form-group">
+                            <label for="day3-accessory1-weight">Front Squat (kg)</label>
+                            <input type="number" id="day3-accessory1-weight" name="accessory_front_squat_weight" step="0.5">
+                            <label for="day3-accessory1-reps">Reps</label>
+                            <input type="number" id="day3-accessory1-reps" name="accessory_front_squat_reps" step="1">
+                        </div>
+                        <div class="form-group">
+                            <label for="day3-accessory2-weight">Close-Grip Bench/Dips (kg)</label>
+                            <input type="number" id="day3-accessory2-weight" name="accessory_close_grip_bench_dips_weight" step="0.5">
+                             <label for="day3-accessory2-reps">Reps</label>
+                            <input type="number" id="day3-accessory2-reps" name="accessory_close_grip_bench_dips_reps" step="1">
+                        </div>
+                        <div class="form-group">
+                            <label for="day3-accessory3-weight">Leg Press (kg)</label>
+                            <input type="number" id="day3-accessory3-weight" name="accessory_leg_press_weight" step="0.5">
+                            <label for="day3-accessory3-reps">Reps</label>
+                            <input type="number" id="day3-accessory3-reps" name="accessory_leg_press_reps" step="1">
+                        </div>
+                         <div class="form-group">
+                            <label for="day3-accessory4-weight">EZ-Bar Curl (kg)</label>
+                            <input type="number" id="day3-accessory4-weight" name="accessory_ez_bar_curl_weight" step="0.5">
+                             <label for="day3-accessory4-reps">Reps</label>
+                            <input type="number" id="day3-accessory4-reps" name="accessory_ez_bar_curl_reps" step="1">
+                        </div>
+                        <div class="form-group">
+                            <label for="day3-accessory5-weight">Triceps Push-down (kg)</label>
+                            <input type="number" id="day3-accessory5-weight" name="accessory_triceps_pushdown_weight" step="0.5">
+                            <label for="day3-accessory5-reps">Reps</label>
+                            <input type="number" id="day3-accessory5-reps" name="accessory_triceps_pushdown_reps" step="1">
+                        </div>
+                    </details>
+                    <div class="form-group">
+                        <label for="day3-notes">Notes</label>
+                        <textarea id="day3-notes" name="notes" rows="3"></textarea>
+                    </div>
+                    <button type="submit" class="btn-primary" id="log-day3">Log Session</button>
+                </form>
+            </div>
+
+            <div id="logs-content" class="tab-content">
+                <header>
+                    <h2>Session Logs</h2>
+                </header>
+                <div class="filter-chips">
+                    <button data-filter="all" class="chip active">All</button>
+                    <button data-filter="1" class="chip">Day 1</button>
+                    <button data-filter="2" class="chip">Day 2</button>
+                    <button data-filter="3" class="chip">Day 3</button>
+                </div>
+                <div id="logs-list" class="logs-list">
+                    </div>
+                <button id="export-excel" class="btn-primary">Export to Excel (.xlsx)</button>
+            </div>
+
+            <div id="info-content" class="tab-content">
+                <header>
+                    <h2>Routine Info</h2>
+                </header>
+                <div class="static-content">
+                    <h2>How This Plan Works</h2>
+                    <p>Train three times per week. Each day has one “main lift” and supportive work. On your last set, do an AMRAP (as many reps as possible) but stop when form breaks or effort feels like RPE 9.</p>
+                    <h3>Progression</h3>
+                    <ul>
+                        <li>If last week’s AMRAP felt ≤ RPE 8, add +5 kg to Squat/Deadlift or +2 kg to Bench/Press next time.</li>
+                        <li>When progress stalls for two weeks, drop weights to 60 % for one easy week, then continue.</li>
+                    </ul>
+                    <h3>Glossary</h3>
+                    <p><strong>Rep:</strong> One up-and-down. <strong>Set:</strong> Group of reps. <strong>AMRAP:</strong> As many reps as possible. <strong>RPE:</strong> Effort scale 6 (easy) – 10 (max).</p>
+                    <h3>Warm-up Guide</h3>
+                    <p>5 min light cardio → empty-bar reps → small jumps to working weight.</p>
+                    <h3>Safety & Recovery</h3>
+                    <p>Sleep 7–9 h, eat ~2 g protein per kg body-weight, hydrate.</p>
+                </div>
+            </div>
+        </div>
+
+        <nav class="tab-bar">
+            <button data-tab="day1-content" class="tab-button active-tab-button">Day 1</button>
+            <button data-tab="day2-content" class="tab-button">Day 2</button>
+            <button data-tab="day3-content" class="tab-button">Day 3</button>
+            <button data-tab="logs-content" class="tab-button">Logs</button>
+            <button data-tab="info-content" class="tab-button">Info</button>
         </nav>
-    </header>
+    </div>
 
-    <main>
-        <section id="day1" class="workout-day">
-            <h2>Day 1 – Squat Focus</h2>
-            <div class="form-group">
-                <label for="date-day1">Date</label>
-                <input type="date" id="date-day1" value="">
-            </div>
-            <div class="form-group">
-                <label for="bodyweight-day1">Body-weight (kg)</label>
-                <input type="number" id="bodyweight-day1" placeholder="Enter today’s BW">
-            </div>
-            <div class="exercise">
-                <h3>Main Lift – Back Squat</h3>
-                <table>
-                    <thead>
-                        <tr>
-                            <th>Set #</th>
-                            <th>Weight (kg)</th>
-                            <th>Reps</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>1</td>
-                            <td><input type="number" data-set="1" data-exercise="Back Squat"></td>
-                            <td>3</td>
-                        </tr>
-                        <tr>
-                            <td>2</td>
-                            <td><input type="number" data-set="2" data-exercise="Back Squat"></td>
-                            <td>3</td>
-                        </tr>
-                        <tr>
-                            <td>3</td>
-                            <td><input type="number" data-set="3" data-exercise="Back Squat"></td>
-                            <td>3</td>
-                        </tr>
-                        <tr>
-                            <td>4</td>
-                            <td><input type="number" data-set="4" data-exercise="Back Squat"></td>
-                            <td>3</td>
-                        </tr>
-                        <tr>
-                            <td>5</td>
-                            <td><input type="number" data-set="5" data-exercise="Back Squat"></td>
-                            <td>3</td>
-                        </tr>
-                    </tbody>
-                </table>
-                <div class="amrap-group">
-                    <label for="amrap-day1">Mark 5th set as AMRAP</label>
-                    <input type="checkbox" id="amrap-day1" checked>
-                    <input type="number" id="amrap-reps-day1" placeholder="AMRAP reps" style="display: none;">
-                    <label for="rpe-day1">RPE (6-10):</label>
-                    <input type="range" id="rpe-day1" min="6" max="10" value="8" style="display: none;">
-                    <span id="rpe-value-day1">8</span>
-                </div>
-            </div>
-            <div class="exercise">
-                <div class="accordion">
-                    <div class="accordion-header">
-                        <h3>Accessory Work (tap to expand)</h3>
-                    </div>
-                    <div class="accordion-body" style="display: none;">
-                        <ul>
-                            <li>Romanian Deadlift – 3x6 <input type="number" placeholder="Weight (kg)" data-exercise="Romanian Deadlift"></li>
-                            <li>Walking Lunges – 2x10 each leg <input type="number" placeholder="Weight (kg)" data-exercise="Walking Lunges"></li>
-                            <li>Standing Calf Raises – 3x15 <input type="number" placeholder="Weight (kg)" data-exercise="Standing Calf Raises"></li>
-                            <li>Hanging Leg Raises – 3x15 <input type="number" placeholder="Weight (kg)" data-exercise="Hanging Leg Raises"></li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-            <div class="form-group">
-                <label for="notes-day1">Notes</label>
-                <textarea id="notes-day1" placeholder="Technique cues, injuries, etc."></textarea>
-            </div>
-            <button class="log-workout" data-day="Day 1">Log Day 1 Session</button>
-        </section>
+    <div id="toast" class="toast"></div>
 
-        <section id="day2" class="workout-day" style="display: none;">
-            <h2>Day 2 – Bench Focus</h2>
-             <div class="form-group">
-                <label for="date-day2">Date</label>
-                <input type="date" id="date-day2" value="">
-            </div>
-            <div class="form-group">
-                <label for="bodyweight-day2">Body-weight (kg)</label>
-                <input type="number" id="bodyweight-day2" placeholder="Enter today’s BW">
-            </div>
-            <div class="exercise">
-                <h3>Main Lift – Bench Press (Paused)</h3>
-                <table>
-                    <thead>
-                        <tr>
-                            <th>Set #</th>
-                            <th>Weight (kg)</th>
-                            <th>Reps</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>1</td>
-                            <td><input type="number" data-set="1" data-exercise="Bench Press"></td>
-                            <td>3</td>
-                        </tr>
-                        <tr>
-                            <td>2</td>
-                            <td><input type="number" data-set="2" data-exercise="Bench Press"></td>
-                            <td>3</td>
-                        </tr>
-                        <tr>
-                            <td>3</td>
-                            <td><input type="number" data-set="3" data-exercise="Bench Press"></td>
-                            <td>3</td>
-                        </tr>
-                        <tr>
-                            <td>4</td>
-                            <td><input type="number" data-set="4" data-exercise="Bench Press"></td>
-                            <td>3</td>
-                        </tr>
-                        <tr>
-                            <td>5</td>
-                            <td><input type="number" data-set="5" data-exercise="Bench Press"></td>
-                            <td>3</td>
-                        </tr>
-                    </tbody>
-                </table>
-                <div class="amrap-group">
-                    <label for="amrap-day2">Mark 5th set as AMRAP</label>
-                    <input type="checkbox" id="amrap-day2" checked>
-                    <input type="number" id="amrap-reps-day2" placeholder="AMRAP reps" style="display: none;">
-                     <label for="rpe-day2">RPE (6-10):</label>
-                    <input type="range" id="rpe-day2" min="6" max="10" value="8" style="display: none;">
-                    <span id="rpe-value-day2">8</span>
-                </div>
-            </div>
-            <div class="exercise">
-                 <div class="accordion">
-                    <div class="accordion-header">
-                        <h3>Accessory Work (tap to expand)</h3>
-                    </div>
-                    <div class="accordion-body" style="display: none;">
-                        <ul>
-                            <li>Overhead Press – 3x6 <input type="number" placeholder="Weight (kg)" data-exercise="Overhead Press"></li>
-                            <li>Incline Dumbbell Press – 3x8 <input type="number" placeholder="Weight (kg)" data-exercise="Incline Dumbbell Press"></li>
-                            <li>Dips – 3x10 <input type="number" placeholder="Weight (kg)" data-exercise="Dips"></li>
-                            <li>Triceps Pushdowns – 3x12 <input type="number" placeholder="Weight (kg)" data-exercise="Triceps Pushdowns"></li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-            <div class="form-group">
-                <label for="notes-day2">Notes</label>
-                <textarea id="notes-day2" placeholder="Technique cues, injuries, etc."></textarea>
-            </div>
-            <button class="log-workout" data-day="Day 2">Log Day 2 Session</button>
-        </section>
-
-        <section id="day3" class="workout-day" style="display: none;">
-            <h2>Day 3 – Deadlift Focus</h2>
-            <div class="form-group">
-                <label for="date-day3">Date</label>
-                <input type="date" id="date-day3" value="">
-            </div>
-            <div class="form-group">
-                <label for="bodyweight-day3">Body-weight (kg)</label>
-                <input type="number" id="bodyweight-day3" placeholder="Enter today’s BW">
-            </div>
-            <div class="exercise">
-                <h3>Main Lift – Conventional Deadlift</h3>
-                <table>
-                    <thead>
-                        <tr>
-                            <th>Set #</th>
-                            <th>Weight (kg)</th>
-                            <th>Reps</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>1</td>
-                            <td><input type="number" data-set="1" data-exercise="Deadlift"></td>
-                            <td>2</td>
-                        </tr>
-                        <tr>
-                            <td>2</td>
-                            <td><input type="number" data-set="2" data-exercise="Deadlift"></td>
-                            <td>2</td>
-                        </tr>
-                        <tr>
-                            <td>3</td>
-                            <td><input type="number" data-set="3" data-exercise="Deadlift"></td>
-                            <td>2</td>
-                        </tr>
-                        <tr>
-                            <td>4</td>
-                            <td><input type="number" data-set="4" data-exercise="Deadlift"></td>
-                            <td>2</td>
-                        </tr>
-                        <tr>
-                            <td>5</td>
-                            <td><input type="number" data-set="5" data-exercise="Deadlift"></td>
-                            <td>2</td>
-                        </tr>
-                    </tbody>
-                </table>
-                <div class="amrap-group">
-                    <label for="amrap-day3">Mark 5th set as AMRAP</label>
-                    <input type="checkbox" id="amrap-day3" checked>
-                    <input type="number" id="amrap-reps-day3" placeholder="AMRAP reps" style="display: none;">
-                    <label for="rpe-day3">RPE (6-10):</label>
-                    <input type="range" id="rpe-day3" min="6" max="10" value="8" style="display: none;">
-                    <span id="rpe-value-day3">8</span>
-                </div>
-            </div>
-            <div class="exercise">
-                <div class="accordion">
-                    <div class="accordion-header">
-                        <h3>Accessory Work (tap to expand)</h3>
-                    </div>
-                    <div class="accordion-body" style="display: none;">
-                        <ul>
-                            <li>Front Squat – 3x6 <input type="number" placeholder="Weight (kg)" data-exercise="Front Squat"></li>
-                            <li>Close Grip Bench Press/Dips – 3x10 <input type="number" placeholder="Weight (kg)" data-exercise="Close Grip Bench Press/Dips"></li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-            <div class="form-group">
-                <label for="notes-day3">Notes</label>
-                <textarea id="notes-day3" placeholder="Technique cues, injuries, etc."></textarea>
-            </div>
-            <button class="log-workout" data-day="Day 3">Log Day 3 Session</button>
-        </section>
-
-        <section id="logs" style="display: none;">
-            <h2>Training Logs</h2>
-            <div id="log-filter">
-                <button data-filter="all">All</button>
-                <button data-filter="Day 1">Day 1</button>
-                <button data-filter="Day 2">Day 2</button>
-                <button data-filter="Day 3">Day 3</button>
-            </div>
-            <ul id="history-list">
-                </ul>
-            <button id="export-excel">
-                <span class="icon"></span> Export to Excel (.xlsx)
-            </button>
-            <div id="log-empty-state" style="display:none;">
-                <p>No sessions logged yet. Smash the ‘Log’ button on a workout tab to get started!</p>
-            </div>
-        </section>
-
-        <section id="info" style="display: none;">
-            <h2>Routine Info</h2>
-            <section>
-                <h3>Key words you’ll see</h3>
-                <ul>
-                    <li><b>Rep (repetition)</b> One up-and-down of the weight.</li>
-                    <li><b>Set</b> A bunch of reps done together before you rest.</li>
-                    <li><b>RPE 7–8</b> “I could have done 2–3 more reps if I had to.” A built-in safety check so you don’t go to failure every time.</li>
-                    <li><b>1 RM</b> The heaviest weight you could lift once, with good form. (You don’t have to test it right now.)</li>
-                </ul>
-            </section>
-            <section>
-                <h3>Weekly schedule (pick the days that suit you)</h3>
-                <p>Leave one day off between Day 1 and Day 3 so your legs recover.</p>
-                <ul>
-                    <li><b>Day</b> What you’ll work on Example calendar</li>
-                    <li>Day 1 Squat + pushing muscles (chest, shoulders) Monday</li>
-                    <li>Day 2 Bench press + pulling muscles (back) Wednesday</li>
-                    <li>Day 3 Deadlift + extra legs / arms Friday</li>
-                </ul>
-            </section>
-            <section>
-                <h3>What to do each day</h3>
-                <h4>Day 1 – “Squat day”</h4>
-                <ol>
-                    <li>Back-squat – 5 sets × 3 reps
-                        <p>Pick a weight you can do 3 solid reps while still feeling you could do 2 more (RPE 7–8).</p>
-                    </li>
-                    <li>Paused bench press – 4 × 5
-                        <p>Lower the bar, pause for 1 sec on the chest, press up.</p>
-                    </li>
-                    <li>Romanian deadlift – 3 × 6
-                        <p>Hip-hinge that works hamstrings and lower back.</p>
-                    </li>
-                    <li>Dumb-bell split-squat – 3 × 8 per leg</li>
-                    <li>Incline dumb-bell press – 3 × 10</li>
-                    <li>10 min quick conditioning – sled pushes, bike sprints, or brisk walking on an incline.</li>
-                </ol>
-
-                <h4>Day 2 – “Bench-press day”</h4>                <ol>
-                    <li>Bench press (normal pause) – 5 × 3</li>
-                    <li>Barbell or Pendlay row – 4 × 6</li>
-                    <li>Overhead press – 3 × 5</li>
-                    <li>Weighted pull-ups – 4 × 5<p>(If you can’t do pull-ups yet, use a resistance band or do lat pull-downs.)</p>
-                    </li>
-                    <li>Rear-delt fly – 3 × 12</li>
-                    <li>Core superset – ab-wheel roll-outs &amp; hanging knee-raises, 3 × 10 each</li>
-                </ol>
-
-                <h4>Day 3 – “Deadlift day”</h4>
-                <ol>
-                    <li>Deadlift – 5 sets × 2 reps</li>
-                    <li>Front squat – 4 × 4</li>
-                    <li>Close-grip bench or dips – 3 × 6–8</li>
-                    <li>Leg press (or hack squat) – 3 × 10</li>
-                    <li>Arm superset – EZ-bar curls &amp; triceps push-downs, 3 × 12 each</li>
-                    <li>10 min finisher – farmer carries or kettlebell swings (great for grip and overall fitness)</li>
-                </ol>
-            </section>
-
-            <section>
-                <h3>How to warm up</h3>
-                <ol>
-                    <li>5–7 min easy cardio (rower, bike, brisk walk).</li>
-                    <li>Joint prep: arm circles, leg swings, body-weight squats.</li>
-                    <li>Ramp-up sets: Start each main lift with the empty bar, then add weight in small jumps of 20 – 30 % until you reach your working weight.</li>
-                </ol>
-                <p>(Example for a 100 kg squat goal: bar × 10 → 40 kg × 5 → 60 kg × 3 → 80 kg × 1 → work sets at 100 kg.)</p>
-            </section>
-
-            <section>
-                <h3>How and when to add weight</h3>
-                <h4>First 8–12 weeks (simple “every-time” rule)</h4>
-                <ul>
-                    <li>If you finished all the sets and the last set still felt like RPE 8 or easier, add weight next week.</li>
-                    <li>Lower-body lifts: +5 kg.</li>
-                    <li>Upper-body lifts: +2–2.5 kg (or the next small plate you own).</li>
-                </ul>
-                <p>You’ll probably increase the weight each session for 4–5 weeks, then every second session as it gets heavier.</p>
-
-                <h4>After that (slightly more advanced “4-week wave”)</h4>
-                <ol>
-                    <li>Week 1: Use ~75 % of your best lift (feels light).</li>
-                    <li>Week 2: 80 %.</li>
-                    <li>Week 3: 85 % (hard week).</li>
-                    <li>Week 4: 60–65 % (easy “deload” to recover).</li>
-                </ol>
-                <p>Then repeat, a little heavier than last time.</p>
-
-                <p>If you don’t know your true 1 RM, no problem—just keep the “add weight when it feels doable” rule for your first few months.</p>
-            </section>
-
-            <section>
-                <h3>Eating, sleeping, and feeling good</h3>
-                <table>
-                    <tr>
-                        <th>Habit</th>
-                        <th>Aim for</th>
-                    </tr>
-                    <tr>
-                        <td>Sleep</td>
-                        <td>7–9 h each night (muscles repair while you snooze).</td>
-                    </tr>
-                    <tr>
-                        <td>Protein</td>
-                        <td>About 2 g per kg of body-weight daily (e.g., 150 g if you weigh 75 kg).</td>
-                    </tr>
-                    <tr>
-                        <td>Calories</td>
-                        <td>A small daily surplus (≈ 200–300 kcal above maintenance) helps strength climb.</td>
-                    </tr>
-                    <tr>
-                        <td>Hydration</td>
-                        <td>2–3 L water a day.</td>
-                    </tr>
-                     <tr>
-                        <td>Soreness check</td>
-                        <td>A little muscle ache is fine; sharp joint pain is not. If something hurts in a bad way, stop and ask for help.</td>
-                    </tr>
-                </table>
-            </section>
-
-            <section>
-                <h3>Tracking progress (super simple)</h3>
-                <table>
-                    <tr>
-                        <th>What to note</th>
-                        <th>How</th>
-                    </tr>
-                    <tr>
-                        <td>Weights and reps</td>
-                        <td>Snap a photo of the workout log on your phone or jot it in a notebook.</td>
-                    </tr>
-                    <tr>
-                         <td>RPE of last set</td>
-                        <td>Write a number 6–10 beside it (10 = absolute max).</td>
-                    </tr>
-                    <tr>
-                        <td>Body-weight (optional)</td>
-                        <td>Weigh once a week, same time of day.</td>
-                    </tr>
-                </table>
-                <p>If the numbers in your log are creeping up over the months, the program is working. 🎉</p>
-            </section>
-
-            <section>
-                <h3>Bottom line</h3>
-                <ol>
-                    <li>Show up three times a week, hit the big lifts first, do the support work, go home.</li>
-                    <li>Add a little weight whenever the current load feels “pretty hard but not a grinder.”</li>
-                    <li>Eat, sleep, and repeat—strength is just patient practice stacked over many weeks.</li>
-                </ol>
-            </section>
-        </section>
-    </main>
-    <script src="script.js"></script>
-    <script src="https://unpkg.com/xlsx/dist/xlsx.full.min.js"></script>
+    <script src="./lib/xlsx.full.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.0/FileSaver.min.js"></script>
+    <script src="data.js"></script>
+    <script src="app.js"></script>
 </body>
 </html>
