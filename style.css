@@ -156,7 +156,7 @@ body {
     border-color: var(--primary-color);
     box-shadow: 0 0 0 3px rgba(76, 175, 80, 0.25); 
 }
-.exercise-group input[name*="amrap_reps"] {
+.exercise-group input[name*="amrap_reps"] { /* Style for AMRAP input if needed */
     font-size: 0.9em;
     padding: 10px;
 }
