@@ -17,16 +17,20 @@ html, body {
 /* CSS Variables - Theme */
 :root {
     --text-color: #333;
-    --background-color: #f8f9fa; /* Lighter grey */
+    --background-color: #f8f9fa;
     --primary-color: #4caf50;
     --primary-color-dark: #388e3c;
-    --secondary-color: #ffffff; /* Card backgrounds, nav */
-    --border-color: #dee2e6; /* Slightly darker border */
+    --secondary-color: #ffffff;
+    --border-color: #dee2e6;
     --tab-bar-height: 60px;
     --button-text-color: #fff;
     --header-text-color: #2c3e50;
     --shadow-color-light: rgba(0, 0, 0, 0.05);
     --shadow-color-medium: rgba(0, 0, 0, 0.1);
+    --input-background: #fdfdfd;
+    --input-placeholder-color: #adb5bd;
+    --text-muted: #6c757d;
+    --sets-reps-color: #5a6268;
 }
 
 body {
@@ -52,13 +56,13 @@ body {
     flex-grow: 1;
     overflow-y: auto;
     padding: 20px;
-    padding-bottom: calc(var(--tab-bar-height) + 20px);
+    padding-bottom: calc(var(--tab-bar-height) + 20px); /* Increased padding at bottom */
 }
 
 .tab-content {
     display: none;
     flex-direction: column;
-    gap: 20px;
+    gap: 20px; /* Consistent gap */
     animation: fadeIn 0.3s ease-in-out;
 }
 
@@ -73,105 +77,146 @@ body {
 
 .page-header {
     text-align: center;
-    margin-bottom: 5px; /* Reduced margin */
+    margin-bottom: 15px; /* More space after header before form */
 }
 
 .page-header h1 {
     font-size: 1.7em;
     color: var(--header-text-color);
     font-weight: 600;
-    margin-bottom: 2px;
+    margin-bottom: 4px;
 }
 
 .page-header p {
     font-size: 0.9em;
-    color: #6c757d; /* Bootstrap's text-muted color */
+    color: var(--text-muted);
 }
 
 /* Forms */
 .lift-form {
     display: flex;
     flex-direction: column;
-    gap: 18px; /* Space between exercise groups */
+    gap: 15px; /* Gap between exercise groups and the final button */
     background-color: var(--secondary-color);
     padding: 20px;
-    border-radius: 10px;
-    box-shadow: 0 3px 10px var(--shadow-color-light);
+    border-radius: 12px; /* Softer radius */
+    box-shadow: 0 4px 15px var(--shadow-color-light); /* Softer shadow */
 }
+
 .exercise-group {
-    margin-bottom: 12px;
+    padding-bottom: 12px; /* Increased padding */
+    border-bottom: 1px solid #f0f0f0; /* Light separator line */
 }
-.exercise-group:last-child {
-    margin-bottom: 0;
+.exercise-group:last-of-type { 
+     border-bottom: none; 
+     padding-bottom: 0;
 }
+
 
 .exercise-group label {
     font-weight: 500;
-    font-size: 0.95em; /* Slightly smaller for exercise labels */
-    color: #495057; /* Darker grey */
+    font-size: 0.95em;
+    color: #495057;
     display: block;
-    margin-bottom: 6px;
+    margin-bottom: 3px; /* Reduced margin */
 }
+.exercise-group .sets-reps-info {
+    font-size: 0.8em;
+    color: var(--sets-reps-color);
+    margin-bottom: 6px;
+    font-style: italic;
+}
+.exercise-group .label-weight {
+    /* Specific style if needed */
+}
+.exercise-group .label-amrap {
+    font-size: 0.85em; 
+    color: var(--text-muted);
+    margin-top: 8px; 
+}
+
 
 .exercise-group input[type="number"] {
     width: 100%;
-    padding: 12px; /* Adjusted padding */
+    padding: 12px;
     border: 1px solid var(--border-color);
-    border-radius: 6px;
+    border-radius: 8px; 
     font-size: 1em;
     appearance: textfield;
     -moz-appearance: textfield;
-    background-color: #fdfdfd;
+    background-color: var(--input-background);
+    color: var(--text-color);
+    margin-bottom: 5px; 
 }
 .exercise-group input[type="number"]::placeholder {
-    color: #adb5bd; /* Lighter placeholder */
+    color: var(--input-placeholder-color);
 }
 .exercise-group input[type="number"]:focus {
     outline: none;
     border-color: var(--primary-color);
-    box-shadow: 0 0 0 2.5px rgba(76, 175, 80, 0.25);
+    box-shadow: 0 0 0 3px rgba(76, 175, 80, 0.25); 
 }
+.exercise-group input[name*="amrap_reps"] {
+    font-size: 0.9em;
+    padding: 10px;
+}
+
 
 /* Buttons */
 .btn-primary, .btn-secondary {
     color: var(--button-text-color);
     border: none;
-    padding: 14px; /* Consistent padding */
+    padding: 14px 18px; 
     border-radius: 8px;
-    font-size: 1.05em; /* Slightly smaller button text */
-    font-weight: 500; /* Medium weight */
+    font-size: 1.0em; 
+    font-weight: 500;
     cursor: pointer;
     width: 100%;
     transition: transform 0.1s ease, box-shadow 0.2s ease, background-color 0.2s ease;
-    display: flex;
+    display: inline-flex; 
     align-items: center;
     justify-content: center;
+    text-align: center;
+    gap: 8px; 
 }
+
 .btn-primary {
     background: linear-gradient(135deg, var(--primary-color), var(--primary-color-dark));
-    box-shadow: 0 2px 4px rgba(0,0,0,0.08);
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    margin-top: 10px; 
 }
+
 .btn-secondary {
-    background-color: #6c757d; /* Bootstrap secondary button color */
-    box-shadow: 0 2px 4px rgba(0,0,0,0.08);
-    margin-bottom: 15px; /* Space above logs list */
+    background-color: #6c757d;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    margin-bottom: 15px;
+    width: auto; 
+    padding: 10px 15px; 
 }
 .btn-secondary:hover {
     background-color: #5a6268;
 }
+
 .btn-primary:hover {
-    /* Optional: Add a slight brightness or shadow change */
+    background: linear-gradient(135deg, var(--primary-color-dark), var(--primary-color)); 
 }
+
 .btn-primary:active, .btn-secondary:active {
     transform: translateY(1px);
-    box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+    box-shadow: 0 1px 3px rgba(0,0,0,0.08);
 }
-.btn-primary:disabled {
-    background: #ced4da; /* Disabled color */
+.btn-primary:disabled { 
+    background: #ced4da;
     color: #6c757d;
     cursor: not-allowed;
     box-shadow: none;
 }
+
+.btn-icon { 
+    width: 1em; 
+    height: 1em; 
+}
+
 
 /* Tab Bar */
 .tab-bar {
@@ -196,16 +241,16 @@ body {
     border: none;
     border-top: 3px solid transparent;
     padding: 5px 0;
-    font-size: 0.7rem; /* Even smaller for compact tabs */
+    font-size: 0.7rem;
     font-weight: 500;
-    color: #6c757d;
+    color: var(--text-muted);
     cursor: pointer;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
     transition: color 0.2s ease, border-color 0.2s ease;
-    text-transform: uppercase; /* Uppercase tab labels */
+    text-transform: uppercase;
     letter-spacing: 0.5px;
 }
 .tab-button span { line-height: 1.2; }
@@ -225,16 +270,16 @@ body {
 .log-card {
     background-color: var(--secondary-color);
     border: 1px solid var(--border-color);
-    border-radius: 8px;
+    border-radius: 10px; 
     padding: 15px;
-    box-shadow: 0 2px 5px var(--shadow-color-light);
+    box-shadow: 0 3px 8px var(--shadow-color-light); 
 }
 .log-card-header {
     font-size: 0.8em;
-    color: #6c757d;
+    color: var(--text-muted);
     margin-bottom: 10px;
-    border-bottom: 1px dashed var(--border-color);
-    padding-bottom: 6px;
+    border-bottom: 1px dashed #eee; 
+    padding-bottom: 8px; 
 }
 .log-card-day {
     font-weight: 600;
@@ -243,58 +288,78 @@ body {
 .log-card-lifts {
     font-size: 0.9em;
 }
-.log-card-lifts div {
+.log-card-lifts .lift-entry {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 2px;
     padding: 3px 0;
 }
-.log-card-lifts strong {
-    color: #343a40; /* Darker text for exercise name */
+.log-card-lifts .lift-entry .exercise-name {
+    color: #343a40;
     font-weight: 500;
+    margin-right: 5px; 
 }
-.log-card-lifts span {
+.log-card-lifts .lift-entry .lift-details {
+    text-align: right;
+}
+.log-card-lifts .lift-entry .weight-value { 
     color: var(--primary-color);
     font-weight: 600;
+    background-color: #e8f5e9; 
+    padding: 2px 6px;
+    border-radius: 4px;
+    font-size: 0.95em;
+    margin-left: 5px;
 }
+ .log-card-lifts .lift-entry .amrap-value {
+    font-size: 0.9em;
+    color: var(--text-muted);
+    margin-left: 8px;
+    font-style: italic;
+}
+
 
 /* Info Tab */
 .static-content {
     background-color: var(--secondary-color);
     padding: 20px;
-    border-radius: 10px;
-    box-shadow: 0 3px 10px var(--shadow-color-light);
-    font-size: 0.9rem; /* Slightly smaller base for info text */
+    border-radius: 12px; 
+    box-shadow: 0 4px 15px var(--shadow-color-light); 
+    font-size: 0.9rem;
     color: #495057;
 }
 .static-content h2, .static-content h3 {
     color: var(--primary-color-dark);
-    margin-top: 20px;
-    margin-bottom: 12px; /* More space after headers */
+    margin-top: 22px; 
+    margin-bottom: 14px;
     font-weight: 600;
-    border-bottom: 1px solid #eee;
-    padding-bottom: 6px;
+    border-bottom: 1px solid #e9ecef; 
+    padding-bottom: 8px; 
 }
 .static-content h2:first-child { margin-top: 0; }
 .static-content p, .static-content ul, .static-content ol {
-    margin-bottom: 12px;
-    line-height: 1.65;
+    margin-bottom: 14px; 
+    line-height: 1.7; 
 }
 .static-content ul, .static-content ol { padding-left: 25px; }
 .static-content li { margin-bottom: 8px; }
-.static-content small { color: #6c757d; font-size: 0.9em; display: block; margin-top: 2px;}
+.static-content small { color: var(--text-muted); font-size: 0.9em; display: block; margin-top: 3px;}
 .static-content em { color: #555; font-style: italic;}
 .static-content strong { color: #333; font-weight: 600;}
 .static-content table {
     width: 100%;
-    margin-bottom: 15px;
+    margin-bottom: 18px; 
     border-collapse: collapse;
     font-size: 0.95em;
 }
 .static-content th, .static-content td {
     text-align: left;
-    padding: 8px;
+    padding: 10px; 
     border: 1px solid var(--border-color);
 }
 .static-content th {
-    background-color: #f8f9fa;
+    background-color: #e9ecef; 
     font-weight: 600;
 }
 
@@ -306,18 +371,18 @@ body {
     transform: translateX(-50%);
     background-color: rgba(40, 40, 40, 0.92);
     color: #fff;
-    padding: 10px 18px; /* Adjusted padding */
+    padding: 10px 18px;
     border-radius: 20px;
     z-index: 1000;
     opacity: 0;
     visibility: hidden;
     transition: opacity 0.3s ease, visibility 0.3s ease, bottom 0.3s ease;
-    font-size: 0.85em; /* Slightly smaller toast text */
+    font-size: 0.85em;
     box-shadow: 0 3px 8px rgba(0,0,0,0.15);
     pointer-events: none;
 }
 .toast.show {
     opacity: 1;
     visibility: visible;
-    bottom: calc(var(--tab-bar-height) + 25px); /* Adjusted position */
+    bottom: calc(var(--tab-bar-height) + 25px);
 }
