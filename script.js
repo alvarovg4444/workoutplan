@@ -5,6 +5,9 @@ document.addEventListener('DOMContentLoaded', () => {
     const historySection = document.getElementById('history');
     const historyList = document.getElementById('history-list');
     const logButtons = document.querySelectorAll('.log-workout');
+    const navButtons = document.querySelectorAll('nav button');
+    const exportButton = document.getElementById('export-excel');
+
 
     let workoutHistory = JSON.parse(localStorage.getItem('workoutHistory')) || [];
 
@@ -15,13 +18,19 @@ document.addEventListener('DOMContentLoaded', () => {
         });
         historySection.style.display = 'none';
 
+        navButtons.forEach(button => {
+            button.classList.remove('active');
+        });
+
         if (tabId === 'history') {
             historySection.style.display = 'block';
+            historyButton.classList.add('active');
             renderHistory();
         } else {
             const targetDay = document.getElementById(tabId);
             if (targetDay) {
                 targetDay.style.display = 'block';
+                document.querySelector(`nav button[data-tab="${tabId}"]`).classList.add('active');
             }
         }
     }
@@ -49,8 +58,8 @@ document.addEventListener('DOMContentLoaded', () => {
             exercises: {}
         };
 
-        const daySectionId = day.toLowerCase().replace(/ /g, ''); // Get the day's section ID
-        const inputs = document.querySelectorAll(`#${daySectionId} input[type="number"]`); // Select inputs within the day's section
+        const daySectionId = day.toLowerCase().replace(/ /g, '');
+        const inputs = document.querySelectorAll(`#${daySectionId} input[type="number"]`);
 
         inputs.forEach(input => {
             const exerciseName = input.dataset.exercise;
@@ -88,4 +97,55 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Initial display of the first day
     showTab('day1');
+
+    // Function to export workout history to Excel
+    function exportToExcel() {
+        if (workoutHistory.length === 0) {
+            alert('No workout history to export.');
+            return;
+        }
+
+        // Prepare the data for Excel
+        const data = workoutHistory.map(log => {
+            const row = {
+                Day: log.day,
+                Date: log.date,
+                Time: log.time,
+            };
+            for (const exercise in log.exercises) {
+                row[exercise] = log.exercises[exercise];
+            }
+            return row;
+        });
+
+        // Create a new workbook
+        const workbook = XLSX.utils.book_new();
+        const worksheet = XLSX.utils.json_to_sheet(data);
+
+        // Add the worksheet to the workbook
+        XLSX.utils.book_append_sheet(workbook, worksheet, 'Workout History');
+
+        // Generate the Excel file as a binary string
+        const excelBuffer = XLSX.write(workbook, { bookType: 'xlsx', type: 'array' });
+
+        // Convert the binary string to a Blob
+        const blob = new Blob([excelBuffer], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8' });
+
+        // Create a URL for the Blob
+        const url = URL.createObjectURL(blob);
+
+        // Create a link and trigger the download
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = 'workout_history.xlsx';
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        URL.revokeObjectURL(url);
+    }
+
+    // Event listener for the export button
+    if (exportButton) {
+        exportButton.addEventListener('click', exportToExcel);
+    }
 });
