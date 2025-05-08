@@ -1,30 +1,50 @@
 body {
     font-family: sans-serif;
-    margin: 20px;
+    margin: 0;
     background-color: #f4f4f4;
     color: #333;
+    padding-bottom: 70px;
+    box-sizing: border-box;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
 }
 
 header {
-    background-color: #333;
+    background-color: #34495e;
     color: white;
-    padding: 10px 0;
+    padding: 15px 0;
     text-align: center;
+    margin-bottom: 20px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+}
+
+nav {
+    display: flex;
+    justify-content: center;
     margin-bottom: 20px;
 }
 
 nav button {
-    padding: 10px 15px;
-    margin: 0 10px;
+    padding: 12px 20px;
+    margin: 5px 10px;
     border: none;
-    background-color: #555;
+    background-color: #4CAF50;
     color: white;
     cursor: pointer;
-    border-radius: 5px;
+    border-radius: 8px;
+    font-size: 1em;
+    transition: background-color 0.3s ease;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
 }
 
 nav button:hover {
-    background-color: #777;
+    background-color: #45a049;
+}
+
+nav button.active {
+    background-color: #1e7e34;
+    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.3);
 }
 
 main {
@@ -32,57 +52,85 @@ main {
     padding: 20px;
     border-radius: 8px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    margin-bottom: 70px;
+    flex: 1;
 }
 
 .workout-day {
-    margin-bottom: 20px;
+    margin-bottom: 25px;
     border-bottom: 1px solid #eee;
-    padding-bottom: 20px;
+    padding-bottom: 25px;
 }
 
 .workout-day h2 {
-    color: #333;
+    color: #2c3e50;
     margin-top: 0;
+    margin-bottom: 20px;
+    text-align: center;
 }
 
 .exercise {
-    margin-bottom: 15px;
+    margin-bottom: 20px;
 }
 
 .exercise h3 {
-    color: #555;
+    color: #3498db;
     margin-top: 0;
+    margin-bottom: 10px;
 }
 
 .exercise ul {
-    list-style-type: none;
-    padding: 0;
+    list-style-type: disc;
+    padding-left: 20px;
+    margin-bottom: 15px;
 }
 
 .exercise li {
-    margin-bottom: 5px;
+    margin-bottom: 10px;
+    font-size: 1em;
+    line-height: 1.5;
 }
 
 .exercise input[type="number"] {
-    width: 120px;
-    padding: 5px;
+    width: 140px;
+    padding: 10px;
     margin-left: 10px;
     border: 1px solid #ccc;
-    border-radius: 4px;
+    border-radius: 5px;
+    font-size: 1em;
+    box-sizing: border-box;
 }
 
 .log-workout {
-    background-color: #007bff;
+    background-color: #2980b9;
     color: white;
     border: none;
-    padding: 10px 20px;
-    border-radius: 5px;
+    padding: 12px 25px;
+    border-radius: 8px;
     cursor: pointer;
-    font-size: 1em;
+    font-size: 1.1em;
+    transition: background-color 0.3s ease, box-shadow 0.3s ease;
+    margin-top: 15px;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
 }
 
 .log-workout:hover {
-    background-color: #0056b3;
+    background-color: #21618c;
+    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.3);
+}
+
+#history {
+    padding-bottom: 80px;
+        }
+
+#history h2 {
+    color: #2c3e50;
+    margin-top: 0;
+    margin-bottom: 20px;
+    text-align: center;
 }
 
 #history-list {
@@ -91,10 +139,139 @@ main {
 }
 
 #history-list li {
-    padding: 8px 0;
+    padding: 15px;
     border-bottom: 1px dotted #ccc;
+    font-size: 1em;
+    line-height: 1.6;
+    background-color: #f9f9f9;
+    border-radius: 5px;
+    margin-bottom: 10px;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
 }
 
 #history-list li:last-child {
     border-bottom: none;
+}
+
+/* Mobile Styles */
+@media (max-width: 768px) {
+    body {
+        padding-bottom: 60px;
+    }
+
+    header h1 {
+        font-size: 1.8em;
+    }
+
+    nav button {
+        font-size: 0.9em;
+        padding: 10px 15px;
+        margin: 5px;
+    }
+
+    main {
+        padding: 15px;
+    }
+
+    .workout-day h2 {
+        font-size: 1.5em;
+    }
+
+    .exercise h3 {
+        font-size: 1.1em;
+    }
+
+    .exercise li {
+        font-size: 0.95em;
+    }
+
+    .exercise input[type="number"] {
+        width: 100%;
+        margin-left: 0;
+        margin-bottom: 10px;
+    }
+
+    .log-workout {
+        font-size: 1em;
+        padding: 10px 20px;
+    }
+
+    #history-list li {
+        font-size: 0.9em;
+        padding: 12px;
+    }
+
+    nav {
+        flex-wrap: wrap;
+    }
+
+    nav button {
+        margin: 5px;
+        flex: 1 0 auto;
+        text-align: center;
+    }
+}
+
+/* Fixed Bottom Navigation */
+nav {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    background-color: #34495e;
+    padding: 10px 0;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    box-shadow: 0px -2px 5px rgba(0, 0, 0, 0.1);
+    border-top: 1px solid #4a6572;
+    box-sizing: border-box;
+}
+
+nav button {
+    background-color: transparent;
+    color: #fff;
+    border: none;
+    padding: 10px 15px;
+    font-size: 1em;
+    cursor: pointer;
+    transition: color 0.3s ease;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
+}
+
+nav button:hover {
+    color: #80deea;
+        }
+
+nav button.active {
+    color: #fff;
+    font-weight: bold;
+}
+
+#export-excel {
+    background-color: #1abc9c;
+    color: white;
+    border: none;
+    padding: 12px 25px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 1.1em;
+    transition: background-color 0.3s ease, box-shadow 0.3s ease;
+    margin-top: 20px;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+#export-excel:hover {
+    background-color: #16a085;
+    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.3);
+}
+
+@media (max-width: 768px) {
+    #export-excel {
+        font-size: 1em;
+        padding: 10px 20px;
+    }
 }
