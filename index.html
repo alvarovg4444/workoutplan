@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Workout Plan</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header>
+        <h1>My Workout Plan</h1>
+        <nav>
+            <button data-tab="day1">Day 1: Lower Body</button>
+            <button data-tab="day2">Day 2: Upper Body Push</button>
+            <button data-tab="day3">Day 3: Upper Body Pull</button>
+            <button data-tab="history">History Log</button>
+        </nav>
+    </header>
+
+    <main>
+        <section id="day1" class="workout-day">
+            <h2>Day 1: Lower Body (Squat Focus)</h2>
+            <div class="exercise">
+                <h3>Warm-Up (10–15 min)</h3>
+                <ul>
+                    <li>Dynamic stretches (hip openers, bodyweight squats, leg swings)</li>
+                    <li>Barbell warm-up sets for squats (see below)</li>
+                </ul>
+            </div>
+            <div class="exercise">
+                <h3>Main Lift: Back Squat</h3>
+                <ul>
+                    <li>Bar x 10</li>
+                    <li>60kg x 5</li>
+                    <li>90kg x 2–3</li>
+                    <li>4x4–6 @ working weight (e.g. 110kg) <input type="number" placeholder="Max Weight (kg)" data-exercise="Back Squat"></li>
+                </ul>
+            </div>
+            <div class="exercise">
+                <h3>Accessory Lifts</h3>
+                <ul>
+                    <li>Romanian Deadlift – 3x8 <input type="number" placeholder="Max Weight (kg)" data-exercise="Romanian Deadlift"></li>
+                    <li>Walking Lunges – 2x10 each leg <input type="number" placeholder="Max Weight (kg)" data-exercise="Walking Lunges"></li>
+                    <li>Standing Calf Raises – 3x15 <input type="number" placeholder="Max Weight (kg)" data-exercise="Standing Calf Raises"></li>
+                    <li>Hanging Leg Raises – 3x15 <input type="number" placeholder="Max Weight (kg)" data-exercise="Hanging Leg Raises"></li>
+                </ul>
+            </div>
+            <div class="exercise">
+                <h3>Bodyweight AMRAP Finisher</h3>
+                <ul>
+                    <li>Air Squats or Jump Squats – 1xAMRAP (Push your legs with just bodyweight, aiming for 25–50+ reps)</li>
+                </ul>
+            </div>
+            <button class="log-workout" data-day="Day 1">Log Workout</button>
+        </section>
+
+        <section id="day2" class="workout-day" style="display: none;">
+            <h2>Day 2: Upper Body Push (Bench Focus)</h2>
+            <div class="exercise">
+                <h3>Warm-Up (10–15 min)</h3>
+                <ul>
+                    <li>Arm circles, band work, shoulder mobility</li>
+                    <li>Bench press ramp-up: Bar x 10 → 60kg x 5 → 80kg x 2</li>
+                    <li>Then: 4x4–6 @ working weight (e.g. 100kg)</li>
+                </ul>
+            </div>
+            <div class="exercise">
+                <h3>Main Lift: Bench Press</h3>
+                <ul>
+                    <li>4x4–6 @ working weight (e.g. 100kg) <input type="number" placeholder="Max Weight (kg)" data-exercise="Bench Press"></li>
+                </ul>
+            </div>
+            <div class="exercise">
+                <h3>Accessory Lifts</h3>
+                <ul>
+                    <li>Overhead Press – 3x6 <input type="number" placeholder="Max Weight (kg)" data-exercise="Overhead Press"></li>
+                    <li>Incline Dumbbell Press – 3x8 <input type="number" placeholder="Max Weight (kg)" data-exercise="Incline Dumbbell Press"></li>
+                    <li>Dips – 3x10 <input type="number" placeholder="Max Weight (kg)" data-exercise="Dips"></li>
+                    <li>Triceps Pushdowns – 3x12 <input type="number" placeholder="Max Weight (kg)" data-exercise="Triceps Pushdowns"></li>
+                </ul>
+            </div>
+            <div class="exercise">
+                <h3>Bodyweight AMRAP Finisher</h3>
+                <ul>
+                    <li>Push-Ups – 1xAMRAP (Clean reps, chest touches the floor. Goal: 30–50+ reps)</li>
+                </ul>
+            </div>
+            <button class="log-workout" data-day="Day 2">Log Workout</button>
+        </section>
+
+        <section id="day3" class="workout-day" style="display: none;">
+            <h2>Day 3: Upper Body Pull (Deadlift + Pull-Up Focus)</h2>
+            <div class="exercise">
+                <h3>Warm-Up (10–15 min)</h3>
+                <ul>
+                    <li>Band rows, scap pull-ups, glute bridges</li>
+                    <li>Deadlift ramp-up: Bar x 10 → 100kg x 5 → 140kg x 2</li>
+                    <li>Then: 4x4–6 @ working weight (e.g. 160kg)</li>
+                </ul>
+            </div>
+            <div class="exercise">
+                <h3>Main Lift: Deadlift</h3>
+                <ul>
+                    <li>4x4–6 @ working weight (e.g. 160kg) <input type="number" placeholder="Max Weight (kg)" data-exercise="Deadlift"></li>
+                </ul>
+            </div>
+            <div class="exercise">
+                <h3>Pull-Up Strength Work</h3>
+                <ul>
+                    <li>Weighted Pull-Ups – 4x6 (e.g. +30–40kg) <input type="number" placeholder="Max Weight (kg)" data-exercise="Weighted Pull-Ups"></li>
+                </ul>
+            </div>
+            <div class="exercise">
+                <h3>Accessory Lifts</h3>
+                <ul>
+                    <li>Barbell Row – 3x8 <input type="number" placeholder="Max Weight (kg)" data-exercise="Barbell Row"></li>
+                    <li>Face Pulls – 3x15 <input type="number" placeholder="Max Weight (kg)" data-exercise="Face Pulls"></li>
+                    <li>Hammer Curls – 3x10 <input type="number" placeholder="Max Weight (kg)" data-exercise="Hammer Curls"></li>
+                </ul>
+            </div>
+            <div class="exercise">
+                <h3>Bodyweight AMRAP Finisher</h3>
+                <ul>
+                    <li>Pull-Ups – 1xAMRAP (No weight, clean form. Aim for max reps)</li>
+                </ul>
+            </div>
+            <button class="log-workout" data-day="Day 3">Log Workout</button>
+        </section>
+
+        <section id="history" style="display: none;">
+            <h2>Workout History</h2>
+            <ul id="history-list">
+                </ul>
+        </section>
+    </main>
+
+    <script src="script.js"></script>
+</body>
+</html>
