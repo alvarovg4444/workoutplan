@@ -1,211 +1,161 @@
 /* Minimal CSS Reset */
-*,
-*::before,
-*::after {
+*, *::before, *::after {
     box-sizing: border-box;
     margin: 0;
     padding: 0;
+    -webkit-tap-highlight-color: transparent; /* Remove tap highlight on mobile */
 }
 
 html, body {
     height: 100%;
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
     line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
 }
 
 /* CSS Variables - Theme */
 :root {
-    --text-color: #222;
-    --background-color: #f5f5f5;
-    --primary-accent-color: #4caf50;
-    --secondary-accent-color: #388e3c; /* Darker shade for hover/active */
-    --border-color: #ddd;
-    --card-background: #fff;
-    --tab-bar-height: 56px;
+    --text-color: #333;
+    --background-color: #f4f7f6; /* Slightly off-white */
+    --primary-color: #4caf50; /* Green accent */
+    --primary-color-dark: #388e3c;
+    --secondary-color: #ffffff; /* Card backgrounds, nav */
+    --border-color: #e0e0e0;
+    --tab-bar-height: 60px;
     --button-text-color: #fff;
+    --header-text-color: #2c3e50; /* Darker blue-grey for headers */
+    --shadow-color: rgba(0, 0, 0, 0.08);
 }
 
 body {
     background-color: var(--background-color);
     color: var(--text-color);
     display: flex;
-    justify-content: center; /* Center app on larger screens */
-    align-items: flex-start; /* Align to top on larger screens */
+    justify-content: center;
+    font-size: 16px; /* Base font size for mobile */
 }
 
 .app-container {
     width: 100%;
-    max-width: 480px; /* Max width for mobile-first feel, good for wider screens too */
+    max-width: 500px; /* Max width for a comfortable phone-like view on desktop */
     height: 100%;
     display: flex;
     flex-direction: column;
     background-color: var(--background-color);
-    box-shadow: 0 0 10px rgba(0,0,0,0.1); /* Optional shadow for desktop view */
+    box-shadow: 0 0 20px var(--shadow-color); /* Optional shadow for desktop */
+    overflow: hidden; /* Prevent body scroll when content scrolls */
 }
 
 .content-area {
     flex-grow: 1;
     overflow-y: auto;
-    padding: 15px;
-    padding-bottom: calc(var(--tab-bar-height) + 15px); /* Space for fixed tab bar */
+    padding: 20px;
+    padding-bottom: calc(var(--tab-bar-height) + 20px); /* Space for fixed tab bar */
 }
 
 .tab-content {
     display: none;
     flex-direction: column;
-    gap: 20px;
+    gap: 25px; /* Space between header and form/content */
+    animation: fadeIn 0.3s ease-in-out;
 }
 
 .tab-content.active-tab {
     display: flex;
 }
 
-header h2 {
-    margin-bottom: 15px;
-    color: var(--primary-accent-color);
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.page-header {
     text-align: center;
+    margin-bottom: 10px;
+}
+
+.page-header h1 {
+    font-size: 1.8em; /* Slightly larger for main page titles */
+    color: var(--header-text-color);
+    font-weight: 600;
+    margin-bottom: 4px;
+}
+
+.page-header p {
+    font-size: 0.95em;
+    color: #777;
 }
 
 /* Forms */
-.workout-form {
+.lift-form {
     display: flex;
     flex-direction: column;
-    gap: 15px;
+    gap: 20px; /* Space between form group and button */
+    background-color: var(--secondary-color);
+    padding: 25px;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px var(--shadow-color);
 }
 
 .form-group {
     display: flex;
     flex-direction: column;
-    gap: 5px;
+    gap: 8px;
 }
-.form-group-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 10px 15px;
-    align-items: center;
-}
-
-.form-group-grid label {
-    font-size: 0.9em;
-}
-
 
 label {
-    font-weight: bold;
-    font-size: 0.9em;
+    font-weight: 500; /* Medium weight for labels */
+    font-size: 1em;
     color: #555;
 }
 
-input[type="text"],
-input[type="number"],
-textarea {
-    width: 100%;
-    padding: 10px;
-    border: 1px solid var(--border-color);
-    border-radius: 6px;
-    font-size: 1rem;
-}
-
 input[type="number"] {
-    -moz-appearance: textfield; /* Firefox */
-}
-input[type="number"]::-webkit-outer-spin-button,
-input[type="number"]::-webkit-inner-spin-button {
-    -webkit-appearance: none;
-    margin: 0; /* Safari */
-}
-
-
-textarea {
-    resize: vertical;
-    min-height: 60px;
-}
-
-.checkbox-label {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    font-weight: normal;
-}
-.checkbox-label input[type="checkbox"] {
-    width: auto;
-    accent-color: var(--primary-accent-color);
-}
-
-
-.amrap-fields {
-    border-left: 3px solid var(--primary-accent-color);
-    padding-left: 10px;
-    display: flex;
-    flex-direction: column;
-    gap: 15px;
-}
-
-.amrap-fields.hidden {
-    display: none;
-}
-
-.rpe-slider-container {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-}
-.rpe-slider-container input[type="range"] {
-    flex-grow: 1;
-    accent-color: var(--primary-accent-color);
-}
-.rpe-slider-container span {
-    font-size: 0.85em;
-    color: #666;
-}
-output {
-    font-weight: bold;
-    color: var(--primary-accent-color);
-}
-
-details.accessory-block {
+    width: 100%;
+    padding: 14px; /* More touch-friendly padding */
     border: 1px solid var(--border-color);
-    border-radius: 6px;
-    padding: 10px;
+    border-radius: 8px;
+    font-size: 1.1em;
+    appearance: textfield; /* Removes spinners in some browsers */
+    -moz-appearance: textfield;
+    background-color: #fdfdfd;
 }
-details.accessory-block summary {
-    font-weight: bold;
-    cursor: pointer;
-    color: var(--primary-accent-color);
+input[type="number"]::placeholder {
+    color: #aaa;
 }
-details.accessory-block > div.form-group {
-    padding-top: 10px;
-    display: grid; /* For side-by-side weight/reps */
-    grid-template-columns: auto 1fr auto 1fr; /* Label Weight Label Reps */
-    gap: 5px 10px;
-    align-items: center;
+input[type="number"]:focus {
+    outline: none;
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 2px rgba(76, 175, 80, 0.3);
 }
-details.accessory-block > div.form-group label {
-    font-weight: normal;
-    font-size: 0.85em;
-}
-
 
 /* Buttons */
 .btn-primary {
-    background-color: var(--primary-accent-color);
+    background: linear-gradient(135deg, var(--primary-color), var(--primary-color-dark));
     color: var(--button-text-color);
     border: none;
-    padding: 12px 15px;
-    border-radius: 6px;
-    font-size: 1rem;
-    font-weight: bold;
+    padding: 15px;
+    border-radius: 8px;
+    font-size: 1.1em;
+    font-weight: 600; /* Bolder button text */
     cursor: pointer;
     width: 100%;
-    transition: background-color 0.2s ease;
+    transition: transform 0.1s ease, box-shadow 0.2s ease;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
 }
 
 .btn-primary:hover {
-    background-color: var(--secondary-accent-color);
+    /* Slightly darker or different effect if desired */
+}
+.btn-primary:active {
+    transform: translateY(1px);
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
 }
 .btn-primary:disabled {
-    background-color: #ccc;
+    background: #ccc;
+    color: #888;
     cursor: not-allowed;
+    box-shadow: none;
 }
 
 /* Tab Bar */
@@ -216,157 +166,126 @@ details.accessory-block > div.form-group label {
     left: 0;
     right: 0;
     width: 100%;
-    max-width: 480px; /* Match app-container max-width */
-    margin: 0 auto; /* Center it if app-container is centered */
+    max-width: 500px; /* Match app-container */
+    margin: 0 auto; /* Center with app-container */
     height: var(--tab-bar-height);
-    background-color: #fff;
+    background-color: var(--secondary-color);
     border-top: 1px solid var(--border-color);
-    box-shadow: 0 -2px 5px rgba(0,0,0,0.05);
+    box-shadow: 0 -3px 10px var(--shadow-color);
+    z-index: 100;
 }
 
 .tab-button {
-    flex-grow: 1;
+    flex: 1; /* Distribute space equally */
     background-color: transparent;
     border: none;
-    border-top: 3px solid transparent; /* For active indicator */
-    padding: 0 5px; /* Adjust for small text */
-    font-size: 0.75rem; /* Smaller font for tabs */
-    font-weight: bold;
+    border-top: 3px solid transparent; /* Indicator for active tab */
+    padding: 5px 0;
+    font-size: 0.75rem; /* Compact for tab labels */
+    font-weight: 500;
     color: #777;
     cursor: pointer;
     display: flex;
-    flex-direction: column; /* If using icons + text */
+    flex-direction: column;
     align-items: center;
     justify-content: center;
     transition: color 0.2s ease, border-color 0.2s ease;
-    line-height: 1.2; /* For better text centering */
 }
-/* Example for icon usage */
-/* .tab-button i { font-size: 1.2rem; margin-bottom: 2px; } */
+
+.tab-button span { /* For text, can add icon above later */
+    line-height: 1.2;
+}
 
 .tab-button:hover {
-    color: var(--primary-accent-color);
+    color: var(--primary-color);
 }
 
 .tab-button.active-tab-button {
-    color: var(--primary-accent-color);
-    border-top-color: var(--primary-accent-color);
+    color: var(--primary-color);
+    border-top-color: var(--primary-color);
+    font-weight: 600;
 }
-
 
 /* Logs Tab */
-.filter-chips {
-    display: flex;
-    gap: 8px;
-    margin-bottom: 15px;
-    flex-wrap: wrap; /* Allow chips to wrap on small screens */
-}
-
-.chip {
-    background-color: #e0e0e0;
-    color: #555;
-    border: none;
-    padding: 6px 12px;
-    border-radius: 16px;
-    font-size: 0.85rem;
-    cursor: pointer;
-    transition: background-color 0.2s ease, color 0.2s ease;
-}
-
-.chip:hover {
-    background-color: #d0d0d0;
-}
-
-.chip.active {
-    background-color: var(--primary-accent-color);
-    color: var(--button-text-color);
-}
-
 .logs-list {
     display: flex;
     flex-direction: column;
-    gap: 10px;
+    gap: 12px;
 }
 
 .log-card {
-    background-color: var(--card-background);
+    background-color: var(--secondary-color);
     border: 1px solid var(--border-color);
-    border-radius: 6px;
-    padding: 12px;
-    box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+    border-radius: 10px;
+    padding: 15px;
+    box-shadow: 0 2px 6px var(--shadow-color);
 }
 
 .log-card-header {
-    font-weight: bold;
-    margin-bottom: 8px;
-    color: var(--primary-accent-color);
-    font-size: 1.1em;
-}
-
-.log-card-body p {
-    font-size: 0.9em;
-    margin-bottom: 5px;
-    color: #444;
-}
-
-.log-card-body p strong {
-    color: var(--text-color);
-}
-
-.log-card-body .notes {
-    font-style: italic;
-    color: #666;
-    margin-top: 8px;
     font-size: 0.85em;
-    white-space: pre-wrap; /* Preserve line breaks in notes */
+    color: #888;
+    margin-bottom: 8px;
+}
+
+.log-card-body {
+    font-size: 1.05em;
+    color: var(--text-color);
+    font-weight: 500;
+}
+.log-card-body strong {
+    color: var(--primary-color-dark);
+    font-weight: 600;
 }
 
 
 /* Info Tab */
 .static-content {
-    background-color: var(--card-background);
-    padding: 15px;
-    border-radius: 6px;
-    border: 1px solid var(--border-color);
+    background-color: var(--secondary-color);
+    padding: 20px;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px var(--shadow-color);
+    font-size: 0.95em;
 }
 
 .static-content h2, .static-content h3 {
-    color: var(--primary-accent-color);
-    margin-top: 15px;
+    color: var(--primary-color-dark);
+    margin-top: 20px;
     margin-bottom: 8px;
+    font-weight: 600;
 }
 .static-content h2:first-child {
     margin-top: 0;
 }
 
-.static-content p, .static-content ul, .static-content li {
-    margin-bottom: 10px;
-    font-size: 0.95rem;
+.static-content p, .static-content ul {
+    margin-bottom: 12px;
+    color: #555;
 }
 
 .static-content ul {
-    padding-left: 20px;
+    padding-left: 25px;
 }
-.static-content strong {
-    color: var(--text-color);
+.static-content li {
+    margin-bottom: 6px;
 }
-
 
 /* Toast Notification */
 .toast {
     position: fixed;
-    bottom: calc(var(--tab-bar-height) + 20px); /* Above tab bar */
+    bottom: calc(var(--tab-bar-height) + 20px);
     left: 50%;
     transform: translateX(-50%);
-    background-color: #333;
+    background-color: rgba(40, 40, 40, 0.9); /* Darker, slightly transparent */
     color: #fff;
-    padding: 10px 20px;
-    border-radius: 6px;
+    padding: 12px 20px;
+    border-radius: 20px; /* Pill shape */
     z-index: 1000;
     opacity: 0;
     visibility: hidden;
     transition: opacity 0.3s ease, visibility 0.3s ease, bottom 0.3s ease;
-    font-size: 0.9rem;
+    font-size: 0.9em;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+    pointer-events: none; /* Don't intercept clicks */
 }
 
 .toast.show {
@@ -375,25 +294,9 @@ details.accessory-block > div.form-group label {
     bottom: calc(var(--tab-bar-height) + 30px);
 }
 
-/* For smaller devices if necessary */
-@media (max-width: 360px) {
-    .content-area {
-        padding: 10px;
-        padding-bottom: calc(var(--tab-bar-height) + 10px);
-    }
-    .tab-button {
-        font-size: 0.7rem; /* Even smaller for very narrow screens */
-    }
-    .form-group-grid {
-        grid-template-columns: 1fr; /* Stack rep inputs on very small screens */
-    }
-    details.accessory-block > div.form-group {
-        grid-template-columns: auto 1fr; /* Label, then input below for accessories */
-    }
-    details.accessory-block > div.form-group label:nth-of-type(2) { /* Second label (Reps) */
-        grid-column: 1 / 2; /* Move "Reps" label to new line */
-    }
-    details.accessory-block > div.form-group input[type="number"]:nth-of-type(2) { /* Reps input */
-        grid-column: 2 / 3; /* Move "Reps" input to new line */
-    }
+/* Add some focus styles for accessibility on interactive elements if not covered */
+button:focus, input:focus {
+    /* outline: 2px solid var(--primary-color);
+    outline-offset: 2px; */
+    /* Browser default focus rings are often good, customize if needed */
 }
