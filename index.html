@@ -1,140 +1,445 @@
+1. HTML (index.html)
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>My Workout Plan</title>
+    <title>Workout Log App</title>
     <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" integrity="sha512-9usAa10IRO0HhonpyAIVpjrylPvoDwiPUiKdWk5t3PyolY1cOd4DSE0Ga+ri4AuTroPR5aQvXU9xC6qOPnzFeg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 </head>
 <body>
     <header>
         <h1>My Workout Plan</h1>
         <nav>
-            <button data-tab="day1">Day 1: Lower Body</button>
-            <button data-tab="day2">Day 2: Upper Body Push</button>
-            <button data-tab="day3">Day 3: Upper Body Pull</button>
-            <button data-tab="history">History Log</button>
+            <button data-tab="day1">
+                <span class="icon">🏋️‍♂️</span> <span class="text">Day 1 (Squat)</span>
+            </button>
+            <button data-tab="day2">
+                <span class="icon">💪</span> <span class="text">Day 2 (Bench)</span>
+            </button>
+            <button data-tab="day3">
+                <span class="icon">🦵</span> <span class="text">Day 3 (Deadlift)</span>
+            </button>
+            <button data-tab="logs">
+                <span class="icon">📊</span> <span class="text">Logs</span>
+            </button>
+            <button data-tab="info">
+                <span class="icon">ℹ️</span> <span class="text">Routine Info</span>
+            </button>
         </nav>
     </header>
 
     <main>
         <section id="day1" class="workout-day">
-            <h2>Day 1: Lower Body (Squat Focus)</h2>
-            <div class="exercise">
-                <h3>Warm-Up (10–15 min)</h3>
-                <ul>
-                    <li>Dynamic stretches (hip openers, bodyweight squats, leg swings)</li>
-                    <li>Barbell warm-up sets for squats (see below)</li>
-                </ul>
+            <h2>Day 1 – Squat Focus</h2>
+            <div class="form-group">
+                <label for="date-day1">Date</label>
+                <input type="date" id="date-day1" value="">
+            </div>
+            <div class="form-group">
+                <label for="bodyweight-day1">Body-weight (kg)</label>
+                <input type="number" id="bodyweight-day1" placeholder="Enter today’s BW">
             </div>
             <div class="exercise">
-                <h3>Main Lift: Back Squat</h3>
-                <ul>
-                    <li>Bar x 10</li>
-                    <li>60kg x 5</li>
-                    <li>90kg x 2–3</li>
-                    <li>4x4–6 @ working weight (e.g. 110kg) <input type="number" placeholder="Max Weight (kg)" data-exercise="Back Squat"></li>
-                </ul>
+                <h3>Main Lift – Back Squat</h3>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Set #</th>
+                            <th>Weight (kg)</th>
+                            <th>Reps</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>1</td>
+                            <td><input type="number" data-set="1" data-exercise="Back Squat"></td>
+                            <td>3</td>
+                        </tr>
+                        <tr>
+                            <td>2</td>
+                            <td><input type="number" data-set="2" data-exercise="Back Squat"></td>
+                            <td>3</td>
+                        </tr>
+                        <tr>
+                            <td>3</td>
+                            <td><input type="number" data-set="3" data-exercise="Back Squat"></td>
+                            <td>3</td>
+                        </tr>
+                        <tr>
+                            <td>4</td>
+                            <td><input type="number" data-set="4" data-exercise="Back Squat"></td>
+                            <td>3</td>
+                        </tr>
+                        <tr>
+                            <td>5</td>
+                            <td><input type="number" data-set="5" data-exercise="Back Squat"></td>
+                            <td>3</td>
+                        </tr>
+                    </tbody>
+                </table>
+                <div class="amrap-group">
+                    <label for="amrap-day1">Mark 5th set as AMRAP</label>
+                    <input type="checkbox" id="amrap-day1" checked>
+                    <input type="number" id="amrap-reps-day1" placeholder="AMRAP reps" style="display: none;">
+                    <label for="rpe-day1">RPE (6-10):</label>
+                    <input type="range" id="rpe-day1" min="6" max="10" value="8" style="display: none;">
+                    <span id="rpe-value-day1">8</span>
+                </div>
             </div>
             <div class="exercise">
-                <h3>Accessory Lifts</h3>
-                <ul>
-                    <li>Romanian Deadlift – 3x8 <input type="number" placeholder="Max Weight (kg)" data-exercise="Romanian Deadlift"></li>
-                    <li>Walking Lunges – 2x10 each leg <input type="number" placeholder="Max Weight (kg)" data-exercise="Walking Lunges"></li>
-                    <li>Standing Calf Raises – 3x15 <input type="number" placeholder="Max Weight (kg)" data-exercise="Standing Calf Raises"></li>
-                    <li>Hanging Leg Raises – 3x15 <input type="number" placeholder="Max Weight (kg)" data-exercise="Hanging Leg Raises"></li>
-                </ul>
+                <div class="accordion">
+                    <div class="accordion-header">
+                        <h3>Accessory Work (tap to expand)</h3>
+                    </div>
+                    <div class="accordion-body" style="display: none;">
+                        <ul>
+                            <li>Romanian Deadlift – 3x6 <input type="number" placeholder="Weight (kg)" data-exercise="Romanian Deadlift"></li>
+                            <li>Walking Lunges – 2x10 each leg <input type="number" placeholder="Weight (kg)" data-exercise="Walking Lunges"></li>
+                            <li>Standing Calf Raises – 3x15 <input type="number" placeholder="Weight (kg)" data-exercise="Standing Calf Raises"></li>
+                            <li>Hanging Leg Raises – 3x15 <input type="number" placeholder="Weight (kg)" data-exercise="Hanging Leg Raises"></li>
+                        </ul>
+                    </div>
+                </div>
             </div>
-            <div class="exercise">
-                <h3>Bodyweight AMRAP Finisher</h3>
-                <ul>
-                    <li>Air Squats or Jump Squats – 1xAMRAP (Push your legs with just bodyweight, aiming for 25–50+ reps)</li>
-                </ul>
+            <div class="form-group">
+                <label for="notes-day1">Notes</label>
+                <textarea id="notes-day1" placeholder="Technique cues, injuries, etc."></textarea>
             </div>
-            <button class="log-workout" data-day="Day 1">Log Workout</button>
+            <button class="log-workout" data-day="Day 1">Log Day 1 Session</button>
         </section>
 
         <section id="day2" class="workout-day" style="display: none;">
-            <h2>Day 2: Upper Body Push (Bench Focus)</h2>
-            <div class="exercise">
-                <h3>Warm-Up (10–15 min)</h3>
-                <ul>
-                    <li>Arm circles, band work, shoulder mobility</li>
-                    <li>Bench press ramp-up: Bar x 10 → 60kg x 5 → 80kg x 2</li>
-                    <li>Then: 4x4–6 @ working weight (e.g. 100kg)</li>
-                </ul>
+            <h2>Day 2 – Bench Focus</h2>
+             <div class="form-group">
+                <label for="date-day2">Date</label>
+                <input type="date" id="date-day2" value="">
+            </div>
+            <div class="form-group">
+                <label for="bodyweight-day2">Body-weight (kg)</label>
+                <input type="number" id="bodyweight-day2" placeholder="Enter today’s BW">
             </div>
             <div class="exercise">
-                <h3>Main Lift: Bench Press</h3>
-                <ul>
-                    <li>4x4–6 @ working weight (e.g. 100kg) <input type="number" placeholder="Max Weight (kg)" data-exercise="Bench Press"></li>
-                </ul>
+                <h3>Main Lift – Bench Press (Paused)</h3>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Set #</th>
+                            <th>Weight (kg)</th>
+                            <th>Reps</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>1</td>
+                            <td><input type="number" data-set="1" data-exercise="Bench Press"></td>
+                            <td>3</td>
+                        </tr>
+                        <tr>
+                            <td>2</td>
+                            <td><input type="number" data-set="2" data-exercise="Bench Press"></td>
+                            <td>3</td>
+                        </tr>
+                        <tr>
+                            <td>3</td>
+                            <td><input type="number" data-set="3" data-exercise="Bench Press"></td>
+                            <td>3</td>
+                        </tr>
+                        <tr>
+                            <td>4</td>
+                            <td><input type="number" data-set="4" data-exercise="Bench Press"></td>
+                            <td>3</td>
+                        </tr>
+                        <tr>
+                            <td>5</td>
+                            <td><input type="number" data-set="5" data-exercise="Bench Press"></td>
+                            <td>3</td>
+                        </tr>
+                    </tbody>
+                </table>
+                <div class="amrap-group">
+                    <label for="amrap-day2">Mark 5th set as AMRAP</label>
+                    <input type="checkbox" id="amrap-day2" checked>
+                    <input type="number" id="amrap-reps-day2" placeholder="AMRAP reps" style="display: none;">
+                     <label for="rpe-day2">RPE (6-10):</label>
+                    <input type="range" id="rpe-day2" min="6" max="10" value="8" style="display: none;">
+                    <span id="rpe-value-day2">8</span>
+                </div>
             </div>
             <div class="exercise">
-                <h3>Accessory Lifts</h3>
-                <ul>
-                    <li>Overhead Press – 3x6 <input type="number" placeholder="Max Weight (kg)" data-exercise="Overhead Press"></li>
-                    <li>Incline Dumbbell Press – 3x8 <input type="number" placeholder="Max Weight (kg)" data-exercise="Incline Dumbbell Press"></li>
-                    <li>Dips – 3x10 <input type="number" placeholder="Max Weight (kg)" data-exercise="Dips"></li>
-                    <li>Triceps Pushdowns – 3x12 <input type="number" placeholder="Max Weight (kg)" data-exercise="Triceps Pushdowns"></li>
-                </ul>
+                 <div class="accordion">
+                    <div class="accordion-header">
+                        <h3>Accessory Work (tap to expand)</h3>
+                    </div>
+                    <div class="accordion-body" style="display: none;">
+                        <ul>
+                            <li>Overhead Press – 3x6 <input type="number" placeholder="Weight (kg)" data-exercise="Overhead Press"></li>
+                            <li>Incline Dumbbell Press – 3x8 <input type="number" placeholder="Weight (kg)" data-exercise="Incline Dumbbell Press"></li>
+                            <li>Dips – 3x10 <input type="number" placeholder="Weight (kg)" data-exercise="Dips"></li>
+                            <li>Triceps Pushdowns – 3x12 <input type="number" placeholder="Weight (kg)" data-exercise="Triceps Pushdowns"></li>
+                        </ul>
+                    </div>
+                </div>
             </div>
-            <div class="exercise">
-                <h3>Bodyweight AMRAP Finisher</h3>
-                <ul>
-                    <li>Push-Ups – 1xAMRAP (Clean reps, chest touches the floor. Goal: 30–50+ reps)</li>
-                </ul>
+            <div class="form-group">
+                <label for="notes-day2">Notes</label>
+                <textarea id="notes-day2" placeholder="Technique cues, injuries, etc."></textarea>
             </div>
-            <button class="log-workout" data-day="Day 2">Log Workout</button>
+            <button class="log-workout" data-day="Day 2">Log Day 2 Session</button>
         </section>
 
         <section id="day3" class="workout-day" style="display: none;">
-            <h2>Day 3: Upper Body Pull (Deadlift + Pull-Up Focus)</h2>
-            <div class="exercise">
-                <h3>Warm-Up (10–15 min)</h3>
-                <ul>
-                    <li>Band rows, scap pull-ups, glute bridges</li>
-                    <li>Deadlift ramp-up: Bar x 10 → 100kg x 5 → 140kg x 2</li>
-                    <li>Then: 4x4–6 @ working weight (e.g. 160kg)</li>
-                </ul>
+            <h2>Day 3 – Deadlift Focus</h2>
+            <div class="form-group">
+                <label for="date-day3">Date</label>
+                <input type="date" id="date-day3" value="">
+            </div>
+            <div class="form-group">
+                <label for="bodyweight-day3">Body-weight (kg)</label>
+                <input type="number" id="bodyweight-day3" placeholder="Enter today’s BW">
             </div>
             <div class="exercise">
-                <h3>Main Lift: Deadlift</h3>
-                <ul>
-                    <li>4x4–6 @ working weight (e.g. 160kg) <input type="number" placeholder="Max Weight (kg)" data-exercise="Deadlift"></li>
-                </ul>
+                <h3>Main Lift – Conventional Deadlift</h3>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Set #</th>
+                            <th>Weight (kg)</th>
+                            <th>Reps</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>1</td>
+                            <td><input type="number" data-set="1" data-exercise="Deadlift"></td>
+                            <td>2</td>
+                        </tr>
+                        <tr>
+                            <td>2</td>
+                            <td><input type="number" data-set="2" data-exercise="Deadlift"></td>
+                            <td>2</td>
+                        </tr>
+                        <tr>
+                            <td>3</td>
+                            <td><input type="number" data-set="3" data-exercise="Deadlift"></td>
+                            <td>2</td>
+                        </tr>
+                        <tr>
+                            <td>4</td>
+                            <td><input type="number" data-set="4" data-exercise="Deadlift"></td>
+                            <td>2</td>
+                        </tr>
+                        <tr>
+                            <td>5</td>
+                            <td><input type="number" data-set="5" data-exercise="Deadlift"></td>
+                            <td>2</td>
+                        </tr>
+                    </tbody>
+                </table>
+                <div class="amrap-group">
+                    <label for="amrap-day3">Mark 5th set as AMRAP</label>
+                    <input type="checkbox" id="amrap-day3" checked>
+                    <input type="number" id="amrap-reps-day3" placeholder="AMRAP reps" style="display: none;">
+                    <label for="rpe-day3">RPE (6-10):</label>
+                    <input type="range" id="rpe-day3" min="6" max="10" value="8" style="display: none;">
+                    <span id="rpe-value-day3">8</span>
+                </div>
             </div>
             <div class="exercise">
-                <h3>Pull-Up Strength Work</h3>
-                <ul>
-                    <li>Weighted Pull-Ups – 4x6 (e.g. +30–40kg) <input type="number" placeholder="Max Weight (kg)" data-exercise="Weighted Pull-Ups"></li>
-                </ul>
+                <div class="accordion">
+                    <div class="accordion-header">
+                        <h3>Accessory Work (tap to expand)</h3>
+                    </div>
+                    <div class="accordion-body" style="display: none;">
+                        <ul>
+                            <li>Front Squat – 3x6 <input type="number" placeholder="Weight (kg)" data-exercise="Front Squat"></li>
+                            <li>Close Grip Bench Press/Dips – 3x10 <input type="number" placeholder="Weight (kg)" data-exercise="Close Grip Bench Press/Dips"></li>
+                        </ul>
+                    </div>
+                </div>
             </div>
-            <div class="exercise">
-                <h3>Accessory Lifts</h3>
-                <ul>
-                    <li>Barbell Row – 3x8 <input type="number" placeholder="Max Weight (kg)" data-exercise="Barbell Row"></li>
-                    <li>Face Pulls – 3x15 <input type="number" placeholder="Max Weight (kg)" data-exercise="Face Pulls"></li>
-                    <li>Hammer Curls – 3x10 <input type="number" placeholder="Max Weight (kg)" data-exercise="Hammer Curls"></li>
-                </ul>
+            <div class="form-group">
+                <label for="notes-day3">Notes</label>
+                <textarea id="notes-day3" placeholder="Technique cues, injuries, etc."></textarea>
             </div>
-            <div class="exercise">
-                <h3>Bodyweight AMRAP Finisher</h3>
-                <ul>
-                    <li>Pull-Ups – 1xAMRAP (No weight, clean form. Aim for max reps)</li>
-                </ul>
-            </div>
-            <button class="log-workout" data-day="Day 3">Log Workout</button>
+            <button class="log-workout" data-day="Day 3">Log Day 3 Session</button>
         </section>
 
-        <section id="history" style="display: none;">
-            <h2>Workout History</h2>
+        <section id="logs" style="display: none;">
+            <h2>Training Logs</h2>
+            <div id="log-filter">
+                <button data-filter="all">All</button>
+                <button data-filter="Day 1">Day 1</button>
+                <button data-filter="Day 2">Day 2</button>
+                <button data-filter="Day 3">Day 3</button>
+            </div>
             <ul id="history-list">
                 </ul>
-            <button id="export-excel">Export to Excel</button>
+            <button id="export-excel">
+                <span class="icon"></span> Export to Excel (.xlsx)
+            </button>
+            <div id="log-empty-state" style="display:none;">
+                <p>No sessions logged yet. Smash the ‘Log’ button on a workout tab to get started!</p>
+            </div>
+        </section>
+
+        <section id="info" style="display: none;">
+            <h2>Routine Info</h2>
+            <section>
+                <h3>Key words you’ll see</h3>
+                <ul>
+                    <li><b>Rep (repetition)</b> One up-and-down of the weight.</li>
+                    <li><b>Set</b> A bunch of reps done together before you rest.</li>
+                    <li><b>RPE 7–8</b> “I could have done 2–3 more reps if I had to.” A built-in safety check so you don’t go to failure every time.</li>
+                    <li><b>1 RM</b> The heaviest weight you could lift once, with good form. (You don’t have to test it right now.)</li>
+                </ul>
+            </section>
+            <section>
+                <h3>Weekly schedule (pick the days that suit you)</h3>
+                <p>Leave one day off between Day 1 and Day 3 so your legs recover.</p>
+                <ul>
+                    <li><b>Day</b> What you’ll work on Example calendar</li>
+                    <li>Day 1 Squat + pushing muscles (chest, shoulders) Monday</li>
+                    <li>Day 2 Bench press + pulling muscles (back) Wednesday</li>
+                    <li>Day 3 Deadlift + extra legs / arms Friday</li>
+                </ul>
+            </section>
+            <section>
+                <h3>What to do each day</h3>
+                <h4>Day 1 – “Squat day”</h4>
+                <ol>
+                    <li>Back-squat – 5 sets × 3 reps
+                        <p>Pick a weight you can do 3 solid reps while still feeling you could do 2 more (RPE 7–8).</p>
+                    </li>
+                    <li>Paused bench press – 4 × 5
+                        <p>Lower the bar, pause for 1 sec on the chest, press up.</p>
+                    </li>
+                    <li>Romanian deadlift – 3 × 6
+                        <p>Hip-hinge that works hamstrings and lower back.</p>
+                    </li>
+                    <li>Dumb-bell split-squat – 3 × 8 per leg</li>
+                    <li>Incline dumb-bell press – 3 × 10</li>
+                    <li>10 min quick conditioning – sled pushes, bike sprints, or brisk walking on an incline.</li>
+                </ol>
+
+                <h4>Day 2 – “Bench-press day”</h4>                <ol>
+                    <li>Bench press (normal pause) – 5 × 3</li>
+                    <li>Barbell or Pendlay row – 4 × 6</li>
+                    <li>Overhead press – 3 × 5</li>
+                    <li>Weighted pull-ups – 4 × 5<p>(If you can’t do pull-ups yet, use a resistance band or do lat pull-downs.)</p>
+                    </li>
+                    <li>Rear-delt fly – 3 × 12</li>
+                    <li>Core superset – ab-wheel roll-outs &amp; hanging knee-raises, 3 × 10 each</li>
+                </ol>
+
+                <h4>Day 3 – “Deadlift day”</h4>
+                <ol>
+                    <li>Deadlift – 5 sets × 2 reps</li>
+                    <li>Front squat – 4 × 4</li>
+                    <li>Close-grip bench or dips – 3 × 6–8</li>
+                    <li>Leg press (or hack squat) – 3 × 10</li>
+                    <li>Arm superset – EZ-bar curls &amp; triceps push-downs, 3 × 12 each</li>
+                    <li>10 min finisher – farmer carries or kettlebell swings (great for grip and overall fitness)</li>
+                </ol>
+            </section>
+
+            <section>
+                <h3>How to warm up</h3>
+                <ol>
+                    <li>5–7 min easy cardio (rower, bike, brisk walk).</li>
+                    <li>Joint prep: arm circles, leg swings, body-weight squats.</li>
+                    <li>Ramp-up sets: Start each main lift with the empty bar, then add weight in small jumps of 20 – 30 % until you reach your working weight.</li>
+                </ol>
+                <p>(Example for a 100 kg squat goal: bar × 10 → 40 kg × 5 → 60 kg × 3 → 80 kg × 1 → work sets at 100 kg.)</p>
+            </section>
+
+            <section>
+                <h3>How and when to add weight</h3>
+                <h4>First 8–12 weeks (simple “every-time” rule)</h4>
+                <ul>
+                    <li>If you finished all the sets and the last set still felt like RPE 8 or easier, add weight next week.</li>
+                    <li>Lower-body lifts: +5 kg.</li>
+                    <li>Upper-body lifts: +2–2.5 kg (or the next small plate you own).</li>
+                </ul>
+                <p>You’ll probably increase the weight each session for 4–5 weeks, then every second session as it gets heavier.</p>
+
+                <h4>After that (slightly more advanced “4-week wave”)</h4>
+                <ol>
+                    <li>Week 1: Use ~75 % of your best lift (feels light).</li>
+                    <li>Week 2: 80 %.</li>
+                    <li>Week 3: 85 % (hard week).</li>
+                    <li>Week 4: 60–65 % (easy “deload” to recover).</li>
+                </ol>
+                <p>Then repeat, a little heavier than last time.</p>
+
+                <p>If you don’t know your true 1 RM, no problem—just keep the “add weight when it feels doable” rule for your first few months.</p>
+            </section>
+
+            <section>
+                <h3>Eating, sleeping, and feeling good</h3>
+                <table>
+                    <tr>
+                        <th>Habit</th>
+                        <th>Aim for</th>
+                    </tr>
+                    <tr>
+                        <td>Sleep</td>
+                        <td>7–9 h each night (muscles repair while you snooze).</td>
+                    </tr>
+                    <tr>
+                        <td>Protein</td>
+                        <td>About 2 g per kg of body-weight daily (e.g., 150 g if you weigh 75 kg).</td>
+                    </tr>
+                    <tr>
+                        <td>Calories</td>
+                        <td>A small daily surplus (≈ 200–300 kcal above maintenance) helps strength climb.</td>
+                    </tr>
+                    <tr>
+                        <td>Hydration</td>
+                        <td>2–3 L water a day.</td>
+                    </tr>
+                     <tr>
+                        <td>Soreness check</td>
+                        <td>A little muscle ache is fine; sharp joint pain is not. If something hurts in a bad way, stop and ask for help.</td>
+                    </tr>
+                </table>
+            </section>
+
+            <section>
+                <h3>Tracking progress (super simple)</h3>
+                <table>
+                    <tr>
+                        <th>What to note</th>
+                        <th>How</th>
+                    </tr>
+                    <tr>
+                        <td>Weights and reps</td>
+                        <td>Snap a photo of the workout log on your phone or jot it in a notebook.</td>
+                    </tr>
+                    <tr>
+                         <td>RPE of last set</td>
+                        <td>Write a number 6–10 beside it (10 = absolute max).</td>
+                    </tr>
+                    <tr>
+                        <td>Body-weight (optional)</td>
+                        <td>Weigh once a week, same time of day.</td>
+                    </tr>
+                </table>
+                <p>If the numbers in your log are creeping up over the months, the program is working. 🎉</p>
+            </section>
+
+            <section>
+                <h3>Bottom line</h3>
+                <ol>
+                    <li>Show up three times a week, hit the big lifts first, do the support work, go home.</li>
+                    <li>Add a little weight whenever the current load feels “pretty hard but not a grinder.”</li>
+                    <li>Eat, sleep, and repeat—strength is just patient practice stacked over many weeks.</li>
+                </ol>
+            </section>
         </section>
     </main>
-
     <script src="script.js"></script>
     <script src="https://unpkg.com/xlsx/dist/xlsx.full.min.js"></script>
 </body>
