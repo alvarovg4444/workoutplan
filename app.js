@@ -2,28 +2,29 @@ document.addEventListener('DOMContentLoaded', () => {
     const APP_STORAGE_KEY = 'strengthLogPro_v3_targetedAmrap'; // Updated key
 
     // Define exercises with sets, reps, and main lift indicator
+    // Explicitly set isMainLift to false for non-main lifts for clarity
     const EXERCISES_BY_DAY = {
         1: [ // Squat Day
             { id: 'back_squat', label: 'Back-squat', sets: 5, reps: '3', isMainLift: true },
-            { id: 'paused_bench_press', label: 'Paused bench press', sets: 4, reps: '5' },
-            { id: 'romanian_deadlift', label: 'Romanian deadlift', sets: 3, reps: '6' },
-            { id: 'db_split_squat', label: 'Dumb-bell split-squat', sets: 3, reps: '8 per leg' },
-            { id: 'incline_db_press', label: 'Incline dumb-bell press', sets: 3, reps: '10' }
+            { id: 'paused_bench_press', label: 'Paused bench press', sets: 4, reps: '5', isMainLift: false },
+            { id: 'romanian_deadlift', label: 'Romanian deadlift', sets: 3, reps: '6', isMainLift: false },
+            { id: 'db_split_squat', label: 'Dumb-bell split-squat', sets: 3, reps: '8 per leg', isMainLift: false },
+            { id: 'incline_db_press', label: 'Incline dumb-bell press', sets: 3, reps: '10', isMainLift: false }
         ],
         2: [ // Bench Press Day
             { id: 'bench_press_normal', label: 'Bench press (normal pause)', sets: 5, reps: '3', isMainLift: true },
-            { id: 'barbell_pendlay_row', label: 'Barbell or Pendlay row', sets: 4, reps: '6' },
-            { id: 'overhead_press', label: 'Overhead press', sets: 3, reps: '5' },
-            { id: 'weighted_pullups_lat_pulldowns', label: 'Weighted pull-ups / Lat pull-downs', sets: 4, reps: '5' },
-            { id: 'rear_delt_fly', label: 'Rear-delt fly', sets: 3, reps: '12' }
+            { id: 'barbell_pendlay_row', label: 'Barbell or Pendlay row', sets: 4, reps: '6', isMainLift: false },
+            { id: 'overhead_press', label: 'Overhead press', sets: 3, reps: '5', isMainLift: false },
+            { id: 'weighted_pullups_lat_pulldowns', label: 'Weighted pull-ups / Lat pull-downs', sets: 4, reps: '5', isMainLift: false },
+            { id: 'rear_delt_fly', label: 'Rear-delt fly', sets: 3, reps: '12', isMainLift: false }
         ],
         3: [ // Deadlift Day
             { id: 'deadlift', label: 'Deadlift', sets: 5, reps: '2', isMainLift: true },
-            { id: 'front_squat', label: 'Front squat', sets: 4, reps: '4' },
-            { id: 'close_grip_bench_dips', label: 'Close-grip bench or Dips', sets: 3, reps: '6-8' },
-            { id: 'leg_press_hack_squat', label: 'Leg press or Hack squat', sets: 3, reps: '10' },
-            { id: 'ez_bar_curl', label: 'EZ-bar Curl', sets: 3, reps: '12' }, // Part of superset
-            { id: 'triceps_pushdown', label: 'Triceps Push-down', sets: 3, reps: '12' } // Part of superset
+            { id: 'front_squat', label: 'Front squat', sets: 4, reps: '4', isMainLift: false },
+            { id: 'close_grip_bench_dips', label: 'Close-grip bench or Dips', sets: 3, reps: '6-8', isMainLift: false },
+            { id: 'leg_press_hack_squat', label: 'Leg press or Hack squat', sets: 3, reps: '10', isMainLift: false },
+            { id: 'ez_bar_curl', label: 'EZ-bar Curl', sets: 3, reps: '12', isMainLift: false }, 
+            { id: 'triceps_pushdown', label: 'Triceps Push-down', sets: 3, reps: '12', isMainLift: false } 
         ]
     };
 
@@ -45,6 +46,7 @@ document.addEventListener('DOMContentLoaded', () => {
                                 <div class="sets-reps-info">${exercise.sets} sets × ${exercise.reps} reps</div>
                                 <input type="number" id="exercise_weight_${exercise.id}_day${dayId}" name="exercise_weight_${exercise.id}" step="0.5" inputmode="decimal" placeholder="Weight (kg)">
                         `;
+                        // Conditionally add AMRAP field if it's a main lift
                         if (exercise.isMainLift) {
                             formContentHTML += `
                                 <label for="exercise_amrap_reps_${exercise.id}_day${dayId}" class="label-amrap">${exercise.label} - AMRAP Reps (optional)</label>
@@ -56,7 +58,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     formContentHTML += `<button type="submit" class="btn-primary">Log Day ${dayId} Lifts</button>`;
                     form.innerHTML = formContentHTML;
                 } else {
-                    console.error(`Form or exercises not found for Day ${dayIdKey}.`);
+                    console.error(`Form or exercises not found for Day ${dayIdKey}. Form:`, form, "Exercises:", exercisesForDay);
                 }
             }
         }
@@ -121,27 +123,29 @@ document.addEventListener('DOMContentLoaded', () => {
             exercisesForCurrentDay.forEach(exercise => {
                 const weightValue = formData.get(`exercise_weight_${exercise.id}`);
                 let amrapRepsValue = null;
+                // Only try to get AMRAP reps if the exercise is a main lift
                 if (exercise.isMainLift) {
                     amrapRepsValue = formData.get(`exercise_amrap_reps_${exercise.id}`);
                 }
                 
                 let weight = null;
                 let amrapReps = null;
-                let exerciseHasData = false;
+                let exerciseHasData = false; // Flag to check if any data was entered for this specific exercise
 
                 if (weightValue && weightValue.trim() !== '') {
                     const parsedWeight = parseFloat(weightValue);
-                    if (!isNaN(parsedWeight) && parsedWeight >= 0) {
+                    if (!isNaN(parsedWeight) && parsedWeight >= 0) { // Allow 0 weight
                         weight = parsedWeight;
                         exerciseHasData = true;
                     }
                 }
 
+                // Only process AMRAP reps if it's a main lift and value exists
                 if (exercise.isMainLift && amrapRepsValue && amrapRepsValue.trim() !== '') {
                     const parsedAmrapReps = parseInt(amrapRepsValue, 10);
-                    if (!isNaN(parsedAmrapReps) && parsedAmrapReps >= 0) {
+                    if (!isNaN(parsedAmrapReps) && parsedAmrapReps >= 0) { // Allow 0 reps
                         amrapReps = parsedAmrapReps;
-                        exerciseHasData = true; // AMRAP reps also count as data
+                        exerciseHasData = true; // AMRAP reps also count as data for this exercise
                     }
                 }
                 
@@ -150,14 +154,14 @@ document.addEventListener('DOMContentLoaded', () => {
                         exerciseId: exercise.id,
                         exerciseLabel: exercise.label,
                         weight: weight, 
-                        amrapReps: exercise.isMainLift ? amrapReps : null // Only store AMRAP for main lift
+                        amrapReps: exercise.isMainLift ? amrapReps : null // Store AMRAP only if it's a main lift
                     });
-                    hasEnteredData = true;
+                    hasEnteredData = true; // Overall flag that at least one exercise had data
                 }
             });
 
             if (!hasEnteredData) {
-                showToast('Please enter weight for at least one exercise.');
+                showToast('Please enter weight or AMRAP reps for at least one exercise.');
                 return;
             }
 
@@ -277,6 +281,10 @@ document.addEventListener('DOMContentLoaded', () => {
                     // Store by ID to ensure each exercise (even if appearing on multiple days) is processed once for headers
                     if (!uniqueExercises[ex.id]) { 
                         uniqueExercises[ex.id] = { label: ex.label, isMainLift: !!ex.isMainLift };
+                    } else if (ex.isMainLift && !uniqueExercises[ex.id].isMainLift) {
+                        // If an exercise appears as non-main then main, update its mainLift status
+                        // This ensures the AMRAP column is created if it's a main lift on *any* day
+                        uniqueExercises[ex.id].isMainLift = true;
                     }
                 });
             }
@@ -313,17 +321,23 @@ document.addEventListener('DOMContentLoaded', () => {
 
             if (session.lifts && Array.isArray(session.lifts)) {
                 session.lifts.forEach(lift => {
-                    // Find the exercise definition to check its isMainLift status for AMRAP column
-                    const dayExercises = EXERCISES_BY_DAY[session.dayId] || [];
-                    const exerciseDef = dayExercises.find(ex => ex.id === lift.exerciseId);
-
+                    // Find the exercise definition from ANY day to check its isMainLift status for AMRAP column
+                    let exerciseDef = null;
+                    for (const dayKey in EXERCISES_BY_DAY) {
+                        const foundEx = EXERCISES_BY_DAY[dayKey].find(ex => ex.id === lift.exerciseId);
+                        if (foundEx) {
+                            exerciseDef = foundEx;
+                            break;
+                        }
+                    }
+                    
                     const weightHeader = `${lift.exerciseLabel} - Weight (kg)`;
                     if (allHeaders.includes(weightHeader) && typeof lift.weight === 'number') {
                          row[weightHeader] = lift.weight;
                     }
 
-                    // Only attempt to populate AMRAP if the exercise is a main lift
-                    if (exerciseDef?.isMainLift) {
+                    // Check the global definition of the exercise if it can be a main lift
+                    if (exerciseDef?.isMainLift) { 
                         const amrapHeader = `${lift.exerciseLabel} - AMRAP Reps`;
                         if (allHeaders.includes(amrapHeader) && typeof lift.amrapReps === 'number') {
                              row[amrapHeader] = lift.amrapReps;
@@ -343,7 +357,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const dateStr = `${today.getFullYear()}${String(today.getMonth() + 1).padStart(2, '0')}${String(today.getDate()).padStart(2, '0')}`;
             const fileName = `StrengthLogPro_Export_${dateStr}.xlsx`;
 
-            XLSX.writeFile(workbook, fileName);
+            XLSX.writeFile(workbook, fileName); // This is a function from SheetJS, should be available globally
             showToast("Data exported to Excel!");
         } catch (err) {
             showToast("Error exporting data. See console.");
