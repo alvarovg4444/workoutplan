@@ -1,0 +1,100 @@
+body {
+    font-family: sans-serif;
+    margin: 20px;
+    background-color: #f4f4f4;
+    color: #333;
+}
+
+header {
+    background-color: #333;
+    color: white;
+    padding: 10px 0;
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+nav button {
+    padding: 10px 15px;
+    margin: 0 10px;
+    border: none;
+    background-color: #555;
+    color: white;
+    cursor: pointer;
+    border-radius: 5px;
+}
+
+nav button:hover {
+    background-color: #777;
+}
+
+main {
+    background-color: white;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.workout-day {
+    margin-bottom: 20px;
+    border-bottom: 1px solid #eee;
+    padding-bottom: 20px;
+}
+
+.workout-day h2 {
+    color: #333;
+    margin-top: 0;
+}
+
+.exercise {
+    margin-bottom: 15px;
+}
+
+.exercise h3 {
+    color: #555;
+    margin-top: 0;
+}
+
+.exercise ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+.exercise li {
+    margin-bottom: 5px;
+}
+
+.exercise input[type="number"] {
+    width: 120px;
+    padding: 5px;
+    margin-left: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+.log-workout {
+    background-color: #007bff;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 1em;
+}
+
+.log-workout:hover {
+    background-color: #0056b3;
+}
+
+#history-list {
+    list-style-type: none;
+    padding: 0;
+}
+
+#history-list li {
+    padding: 8px 0;
+    border-bottom: 1px dotted #ccc;
+}
+
+#history-list li:last-child {
+    border-bottom: none;
+}
