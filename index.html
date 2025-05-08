@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Max Weight Logger</title>
+    <title>Strength Log Pro</title>
     <link rel="stylesheet" href="style.css">
     <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
     <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
@@ -11,63 +11,49 @@
     <link rel="manifest" href="site.webmanifest">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <meta name="theme-color" content="#4caf50">
+    <meta name="theme-color" content="#388e3c">
 </head>
 <body>
     <div class="app-container">
         <div class="content-area">
             <div id="day1-content" class="tab-content active-tab">
                 <header class="page-header">
-                    <h1>Day 1: Squat</h1>
-                    <p>Log your max weight lifted.</p>
+                    <h1>Day 1 Lifts</h1>
+                    <p>Log weights for "Squat Day"</p>
                 </header>
                 <form id="day1-form" class="lift-form">
-                    <input type="hidden" name="exerciseName" value="Squat">
                     <input type="hidden" name="dayId" value="1">
-                    <div class="form-group">
-                        <label for="day1-maxWeight">Max Weight (kg)</label>
-                        <input type="number" id="day1-maxWeight" name="maxWeight" step="0.5" inputmode="decimal" required placeholder="e.g., 100">
-                    </div>
-                    <button type="submit" class="btn-primary" id="log-day1">Log Squat</button>
-                </form>
+                    </form>
             </div>
 
             <div id="day2-content" class="tab-content">
                 <header class="page-header">
-                    <h1>Day 2: Bench Press</h1>
-                    <p>Log your max weight lifted.</p>
+                    <h1>Day 2 Lifts</h1>
+                    <p>Log weights for "Bench Press Day"</p>
                 </header>
                 <form id="day2-form" class="lift-form">
-                    <input type="hidden" name="exerciseName" value="Bench Press">
                     <input type="hidden" name="dayId" value="2">
-                    <div class="form-group">
-                        <label for="day2-maxWeight">Max Weight (kg)</label>
-                        <input type="number" id="day2-maxWeight" name="maxWeight" step="0.5" inputmode="decimal" required placeholder="e.g., 80">
-                    </div>
-                    <button type="submit" class="btn-primary" id="log-day2">Log Bench Press</button>
-                </form>
+                    </form>
             </div>
 
             <div id="day3-content" class="tab-content">
                 <header class="page-header">
-                    <h1>Day 3: Deadlift</h1>
-                    <p>Log your max weight lifted.</p>
+                    <h1>Day 3 Lifts</h1>
+                    <p>Log weights for "Deadlift Day"</p>
                 </header>
                 <form id="day3-form" class="lift-form">
-                    <input type="hidden" name="exerciseName" value="Deadlift">
                     <input type="hidden" name="dayId" value="3">
-                    <div class="form-group">
-                        <label for="day3-maxWeight">Max Weight (kg)</label>
-                        <input type="number" id="day3-maxWeight" name="maxWeight" step="0.5" inputmode="decimal" required placeholder="e.g., 120">
-                    </div>
-                    <button type="submit" class="btn-primary" id="log-day3">Log Deadlift</button>
-                </form>
+                    </form>
             </div>
 
             <div id="logs-content" class="tab-content">
                 <header class="page-header">
                     <h1>Session Logs</h1>
                 </header>
+                <button id="export-excel" class="btn-secondary">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" width="18" height="18" style="margin-right: 8px; vertical-align: middle;"><path d="M4 2.5A1.5 1.5 0 0 0 2.5 4v16A1.5 1.5 0 0 0 4 21.5h16a1.5 1.5 0 0 0 1.5-1.5V7.914a1.5 1.5 0 0 0-.44-1.06L16.646 2.44A1.5 1.5 0 0 0 15.586 2H4A1.5 1.5 0 0 0 2.692 2.439L2.5 2.5Zm1.883 11.063c.26-.28.596-.438.948-.438h.006c.356 0 .694.16.95.44l1.116 1.21a.499.499 0 0 0 .7.002l1.115-1.21c.257-.28.595-.44.951-.44h.005c.352 0 .688.157.948.438l2.042 2.217a.5.5 0 0 1-.352.848H6.254a.5.5 0 0 1-.352-.848l2.014-2.217ZM5.75 6a.75.75 0 0 1 .75.75v1.5a.75.75 0 0 1-1.5 0v-1.5A.75.75 0 0 1 5.75 6Zm0 3a.75.75 0 0 1 .75.75v1.5a.75.75 0 0 1-1.5 0v-1.5A.75.75 0 0 1 5.75 9Zm4.5-3a.75.75 0 0 1 .75.75v1.5a.75.75 0 0 1-1.5 0v-1.5a.75.75 0 0 1 .75-.75Zm0 3a.75.75 0 0 1 .75.75v1.5a.75.75 0 0 1-1.5 0v-1.5a.75.75 0 0 1 .75-.75ZM16 2.75v4.414c0 .414.336.75.75.75H21.25a.25.25 0 0 1 .177.427l-6.5 6.5a.75.75 0 0 1-1.06 0l-2.75-2.75a.75.75 0 0 1 1.06-1.06l2.22 2.22 5.97-5.97A.25.25 0 0 1 21.25 10H16.5A.75.75 0 0 1 15.75 9.25V2.75a.75.75 0 0 1 1.5 0Z"/></svg>
+                    Export to Excel
+                </button>
                 <div id="logs-list" class="logs-list">
                     </div>
             </div>
@@ -77,52 +63,174 @@
                     <h1>Routine Info</h1>
                 </header>
                 <div class="static-content">
-                    <h2>How This Plan Works</h2>
-                    <p>This simplified logger helps you track your maximum weight lifted for key exercises on a 3-day cycle. Aim for progressive overload over time.</p>
-                    <p><strong>Day 1:</strong> Squat<br><strong>Day 2:</strong> Bench Press<br><strong>Day 3:</strong> Deadlift</p>
-                    <p>Train three times per week, focusing on one main lift each day.</p>
-                    <h3>Progression</h3>
+                    <h2>1. Key words you’ll see</h2>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Word</th>
+                                <th>What it really means</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Rep (repetition)</td>
+                                <td>One up-and-down of the weight.</td>
+                            </tr>
+                            <tr>
+                                <td>Set</td>
+                                <td>A bunch of reps done together before you rest.</td>
+                            </tr>
+                            <tr>
+                                <td>RPE 7–8</td>
+                                <td>“I could have done 2–3 more reps if I had to.” A built-in safety check so you don’t go to failure every time.</td>
+                            </tr>
+                            <tr>
+                                <td>1 RM</td>
+                                <td>The heaviest weight you could lift once, with good form. (You don’t have to test it right now.)</td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <h2>2. Weekly schedule <small>(pick the days that suit you)</small></h2>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Day</th>
+                                <th>What you’ll work on</th>
+                                <th>Example calendar</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Day 1</td>
+                                <td>Squat + pushing muscles (chest, shoulders)</td>
+                                <td>Monday</td>
+                            </tr>
+                            <tr>
+                                <td>Day 2</td>
+                                <td>Bench press + pulling muscles (back)</td>
+                                <td>Wednesday</td>
+                            </tr>
+                            <tr>
+                                <td>Day 3</td>
+                                <td>Deadlift + extra legs / arms</td>
+                                <td>Friday</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <p><em>Leave one day off between Day 1 and Day 3 so your legs recover.</em></p>
+
+                    <h2>3. What to do each day</h2>
+                    <h3>Day 1 – “Squat day”</h3>
+                    <ol>
+                        <li><strong>Back-squat</strong> – 5 sets × 3 reps
+                            <br><small>Pick a weight you can do 3 solid reps while still feeling you could do 2 more (RPE 7–8).</small></li>
+                        <li><strong>Paused bench press</strong> – 4 × 5
+                            <br><small>Lower the bar, pause for 1 sec on the chest, press up.</small></li>
+                        <li><strong>Romanian deadlift</strong> – 3 × 6
+                            <br><small>Hip-hinge that works hamstrings and lower back.</small></li>
+                        <li><strong>Dumb-bell split-squat</strong> – 3 × 8 per leg</li>
+                        <li><strong>Incline dumb-bell press</strong> – 3 × 10</li>
+                        <li><small>10 min quick conditioning – sled pushes, bike sprints, or brisk walking on an incline.</small></li>
+                    </ol>
+
+                    <h3>Day 2 – “Bench-press day”</h3>
+                    <ol>
+                        <li><strong>Bench press</strong> (normal pause) – 5 × 3</li>
+                        <li><strong>Barbell or Pendlay row</strong> – 4 × 6</li>
+                        <li><strong>Overhead press</strong> – 3 × 5</li>
+                        <li><strong>Weighted pull-ups</strong> – 4 × 5
+                            <br><small>(If you can’t do pull-ups yet, use a resistance band or do lat pull-downs.)</small></li>
+                        <li><strong>Rear-delt fly</strong> – 3 × 12</li>
+                        <li><small>Core superset – ab-wheel roll-outs & hanging knee-raises, 3 × 10 each</small></li>
+                    </ol>
+
+                    <h3>Day 3 – “Deadlift day”</h3>
+                    <ol>
+                        <li><strong>Deadlift</strong> – 5 sets × 2 reps</li>
+                        <li><strong>Front squat</strong> – 4 × 4</li>
+                        <li><strong>Close-grip bench or dips</strong> – 3 × 6–8</li>
+                        <li><strong>Leg press</strong> (or hack squat) – 3 × 10</li>
+                        <li><strong>Arm superset</strong> – EZ-bar curls & triceps push-downs, 3 × 12 each</li>
+                        <li><small>10 min finisher – farmer carries or kettlebell swings (great for grip and overall fitness)</small></li>
+                    </ol>
+
+                    <h2>4. How to warm up</h2>
+                    <ol>
+                        <li>5–7 min easy cardio (rower, bike, brisk walk).</li>
+                        <li>Joint prep: arm circles, leg swings, body-weight squats.</li>
+                        <li>Ramp-up sets: Start each main lift with the empty bar, then add weight in small jumps of 20 – 30 % until you reach your working weight.
+                            <br><small>(Example for a 100 kg squat goal: bar × 10 → 40 kg × 5 → 60 kg × 3 → 80 kg × 1 → work sets at 100 kg.)</small></li>
+                    </ol>
+
+                    <h2>5. How and when to add weight</h2>
+                    <h3>First 8–12 weeks (simple “every-time” rule)</h3>
                     <ul>
-                        <li>When you successfully lift a weight, try to increase it slightly in the next session for that exercise.</li>
-                        <li>For lower body lifts (Squat, Deadlift), consider adding 2.5-5 kg.</li>
-                        <li>For upper body lifts (Bench Press), consider adding 1-2.5 kg.</li>
-                        <li>Listen to your body. Deload or take rest weeks if needed.</li>
+                        <li>If you finished all the sets and the last set still felt like RPE 8 or easier, add weight next week.</li>
+                        <li>Lower-body lifts: +5 kg.</li>
+                        <li>Upper-body lifts: +2–2.5 kg (or the next small plate you own).</li>
                     </ul>
-                    <h3>Glossary</h3>
-                    <p><strong>Max Weight:</strong> The heaviest weight you can lift for one repetition with good form.</p>
-                    <h3>Warm-up Guide</h3>
-                    <p>Always warm up thoroughly before attempting maximal lifts. This typically includes:
-                        <br>5-10 min light cardio.
-                        <br>Dynamic stretching.
-                        <br>Several lighter sets of the main exercise, gradually increasing the weight.
-                    </p>
-                    <h3>Safety & Recovery</h3>
-                    <p>Prioritize good form. Sleep 7-9 hours, eat enough protein, and stay hydrated.</p>
+                    <p><small>You’ll probably increase the weight each session for 4–5 weeks, then every second session as it gets heavier.</small></p>
+
+                    <h3>After that (slightly more advanced “4-week wave”)</h3>
+                    <ol>
+                        <li>Week 1: Use ~75 % of your best lift (feels light).</li>
+                        <li>Week 2: 80 %.</li>
+                        <li>Week 3: 85 % (hard week).</li>
+                        <li>Week 4: 60–65 % (easy “deload” to recover).</li>
+                    </ol>
+                    <p><small>Then repeat, a little heavier than last time. If you don’t know your true 1 RM, no problem—just keep the “add weight when it feels doable” rule for your first few months.</small></p>
+
+                    <h2>6. Eating, sleeping, and feeling good</h2>
+                    <table>
+                        <thead>
+                            <tr><th>Habit</th><th>Aim for</th></tr>
+                        </thead>
+                        <tbody>
+                            <tr><td>Sleep</td><td>7–9 h each night (muscles repair while you snooze).</td></tr>
+                            <tr><td>Protein</td><td>About 2 g per kg of body-weight daily (e.g., 150 g if you weigh 75 kg).</td></tr>
+                            <tr><td>Calories</td><td>A small daily surplus (≈ 200–300 kcal above maintenance) helps strength climb.</td></tr>
+                            <tr><td>Hydration</td><td>2–3 L water a day.</td></tr>
+                            <tr><td>Soreness check</td><td>A little muscle ache is fine; sharp joint pain is not. If something hurts in a bad way, stop and ask for help.</td></tr>
+                        </tbody>
+                    </table>
+
+                    <h2>7. Tracking progress <small>(super simple)</small></h2>
+                    <table>
+                        <thead>
+                            <tr><th>What to note</th><th>How</th></tr>
+                        </thead>
+                        <tbody>
+                            <tr><td>Weights and reps</td><td>Snap a photo of the workout log on your phone or jot it in a notebook.</td></tr>
+                            <tr><td>RPE of last set</td><td>Write a number 6–10 beside it (10 = absolute max).</td></tr>
+                            <tr><td>Body-weight (optional)</td><td>Weigh once a week, same time of day.</td></tr>
+                        </tbody>
+                    </table>
+                    <p><em>If the numbers in your log are creeping up over the months, the program is working. 🎉</em></p>
+
+                    <h2>Bottom line</h2>
+                    <ol>
+                        <li>Show up three times a week, hit the big lifts first, do the support work, go home.</li>
+                        <li>Add a little weight whenever the current load feels “pretty hard but not a grinder.”</li>
+                        <li>Eat, sleep, and repeat—strength is just patient practice stacked over many weeks.</li>
+                    </ol>
                 </div>
             </div>
         </div>
 
         <nav class="tab-bar">
-            <button data-tab="day1-content" class="tab-button active-tab-button">
-                <span>Day 1</span>
-            </button>
-            <button data-tab="day2-content" class="tab-button">
-                <span>Day 2</span>
-            </button>
-            <button data-tab="day3-content" class="tab-button">
-                <span>Day 3</span>
-            </button>
-            <button data-tab="logs-content" class="tab-button">
-                <span>Logs</span>
-            </button>
-            <button data-tab="info-content" class="tab-button">
-                <span>Info</span>
-            </button>
+            <button data-tab="day1-content" class="tab-button active-tab-button"><span>Day 1</span></button>
+            <button data-tab="day2-content" class="tab-button"><span>Day 2</span></button>
+            <button data-tab="day3-content" class="tab-button"><span>Day 3</span></button>
+            <button data-tab="logs-content" class="tab-button"><span>Logs</span></button>
+            <button data-tab="info-content" class="tab-button"><span>Info</span></button>
         </nav>
     </div>
 
     <div id="toast-message" class="toast"></div>
 
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js"></script>
     <script src="app.js"></script>
 </body>
 </html>
